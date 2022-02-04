@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="114.95mm" height="114.95mm" version="1.1" viewBox="0 0 407.29 407.29" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(-2.2896 9.9418)" fill="#161616">
+<rect x="2.2896" y="-9.9418" width="407.29" height="407.29" ry="36.843" fill="#161616" opacity=".998" stroke-linecap="square" stroke-width="2.8346" style="paint-order:stroke fill markers"/>
+</g>
+<g transform="matrix(.26362 0 0 .26362 68.54 108.6)">
+<path d="m407 493 276-143-276-144z" fill="#fff" stroke-width="9.8565"/>
+<path d="m407 206 242 161.6 34-17.6z" fill="#420000" opacity=".12" stroke-width="9.8565"/>
+<g stroke-width="3.5562">
+<g stroke-width="3.5562">
+<linearGradient id="a" x1="512.5" x2="512.5" y1="719.7" y2="1.2" gradientTransform="matrix(1,0,0,-1,0,721)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E52D27" offset="0"/>
+<stop stop-color="#BF171D" offset="1"/>
+</linearGradient>
+<path d="m1013 156.3s-10-70.4-40.6-101.4c-38.8-40.7-82.4-40.9-102.3-43.3-143-10.3-357.4-10.3-357.4-10.3h-0.4s-214.4 0-357.4 10.3c-19.9 2.4-63.5 2.6-102.3 43.3-30.6 31-40.6 101.4-40.6 101.4s-10.2 82.6-10.2 165.3v77.5c0 82.7 10.2 165.3 10.2 165.3s10 70.4 40.6 101.4c38.9 40.7 89.9 39.4 112.6 43.7 81.7 7.8 347.3 10.3 347.3 10.3s214.6-0.3 357.6-10.7c20-2.4 63.5-2.6 102.3-43.3 30.6-31 40.6-101.4 40.6-101.4s10.2-82.7 10.2-165.3v-77.5c0-82.7-10.2-165.3-10.2-165.3zm-606 336.7v-287l276 144z" fill="url(#a)" stroke-width="9.8565"/>
+</g>
+</g>
+</g>
+</svg>
