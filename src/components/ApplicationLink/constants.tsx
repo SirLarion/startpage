@@ -7,37 +7,56 @@ import hbo from './assets/hbo.svg';
 import youtube from './assets/youtube.svg';
 import soundcloud from './assets/soundcloud.svg';
 import spotify from './assets/spotify.svg';
+import github from './assets/github.svg';
+import somafm from './assets/somafm.svg';
 
 import { TAppConfig } from './';
 
-const AppIcon = styled.img`
-  width: 8rem;
-  height: 8rem;
+const StyledIcon = styled.img`
+  width: 20vw;
+  height: 20vw;
+  min-width: 14rem;
+  min-height: 14rem;
 `;
 
 export const ENTERTAINMENT_LINKS: TAppConfig[] = [
   {
     url: 'https://netflix.com',
-    icon: <AppIcon src={netflix} alt="netflix" />,
+    icon: <StyledIcon src={netflix} alt="netflix" />,
   },
   {
     url: 'https://disneyplus.com',
-    icon: <AppIcon src={disney} alt="disney+" />,
+    icon: <StyledIcon src={disney} alt="disney+" />,
   },
   {
     url: 'https://hbomax.com',
-    icon: <AppIcon src={hbo} alt="hbomax" />,
+    icon: <StyledIcon src={hbo} alt="hbomax" />,
   },
   {
     url: 'https://youtube.com',
-    icon: <AppIcon src={youtube} alt="youtube" />,
+    icon: <StyledIcon src={youtube} alt="youtube" />,
   },
   {
     url: 'https://soundcloud.com',
-    icon: <AppIcon src={soundcloud} alt="soundcloud" />,
+    icon: <StyledIcon src={soundcloud} alt="soundcloud" />,
   },
   {
     url: 'https://open.spotify.com',
-    icon: <AppIcon src={spotify} alt="spotify" />,
+    icon: <StyledIcon src={spotify} alt="spotify" />,
+  },
+];
+
+export const PRODUCTION_LINKS: TAppConfig[] = [
+  {
+    url: 'https://github.com',
+    icon: <StyledIcon src={github} alt="github" />,
+  },
+  {
+    url: 'https://soundcloud.com',
+    icon: <StyledIcon src={soundcloud} alt="soundcloud" />,
+  },
+  {
+    url: 'https://somafm.com/player/#/now-playing/groovesalad',
+    icon: <StyledIcon src={somafm} alt="somafm" />,
   },
 ];

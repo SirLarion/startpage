@@ -1,42 +1,57 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useState, ImgHTMLAttributes } from 'react';
 import styled from 'styled-components';
+import { useSpring, animated, config } from 'react-spring';
 
 export * from './constants';
 
-const APP_IDS = [
-  'netflix',
-  // 'youtube',
-  // 'hbo',
-  // 'disney',
-  // 'soundcloud',
-  // 'spotify',
-] as const;
-
-export type TAppId = typeof APP_IDS[number];
 export type TAppConfig = {
   url: `https://${string}`;
   icon: ReactNode;
 };
 
-export interface IApplicationLinkProps {
-  id: TAppId;
-}
+const StyledApplicationLink = styled(animated.a)``;
 
-const StyledApplicationLink = styled.a``;
+const IconWrapper: FC<{ animationDelay: number }> = ({
+  animationDelay,
+  children,
+}) => {
+  const spring = useSpring({
+    config: config.stiff,
+    delay: animationDelay,
+    from: {
+      opacity: 0,
+      transform: 'scale(0.8)',
+    },
+    to: {
+      opacity: 1,
+      transform: 'scale(1)',
+    },
+  });
+  return <animated.div style={spring}>{children}</animated.div>;
+};
 
-export const ApplicationLink: FC<TAppConfig> = ({
+export const ApplicationLink: FC<TAppConfig & { delay: number }> = ({
   url,
   icon,
+  delay,
   ...restProps
 }) => {
+  const [isHover, setHover] = useState(false);
+
+  const { scale } = useSpring({
+    scale: isHover ? 1.1 : 1,
+  });
   return (
     <StyledApplicationLink
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      style={{ scale }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       {...restProps}
     >
-      {icon}
+      <IconWrapper animationDelay={delay}>{icon}</IconWrapper>
     </StyledApplicationLink>
   );
 };

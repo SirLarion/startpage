@@ -1,26 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Routes, Route } from 'react-router-dom';
 
-import {
-  ApplicationLink,
-  TAppConfig,
-  ENTERTAINMENT_LINKS,
-} from './components/ApplicationLink';
+import { LinkContainer } from './components/LinkContainer';
 
 const StyledApp = styled.div`
   height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
 `;
 
 const App = () => {
   return (
     <StyledApp>
-      {ENTERTAINMENT_LINKS.map((link: TAppConfig) => (
-        <ApplicationLink {...link} />
-      ))}
+      <Routes>
+        <Route path="/" element={<LinkContainer type="production" />} />
+        <Route
+          path="/entertainment"
+          element={<LinkContainer type="entertainment" />}
+        />
+      </Routes>
     </StyledApp>
   );
 };
