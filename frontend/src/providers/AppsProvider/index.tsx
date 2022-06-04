@@ -18,7 +18,7 @@ export const AppsProvider: FC = ({ children }) => {
   const [appInfo, setAppInfo] = useState<TAppInfo>(undefined);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/applications').then((res) => {
+    axios.get('http://localhost:12345/applications').then((res) => {
       setAppInfo(res.data);
     });
   }, []);

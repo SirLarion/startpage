@@ -1,0 +1,11 @@
+[Unit]
+Description=Start Node server for browser startpage
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/home/sirlarion/repos/startpage/scripts/startup.sh --no-browser
+ExecStop=/usr/bin/pkill node
+
+[Install]
+WantedBy=multi-user.target
