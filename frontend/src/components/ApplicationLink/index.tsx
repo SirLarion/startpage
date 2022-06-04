@@ -1,13 +1,8 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useSpring, animated, config } from 'react-spring';
 
-export * from './constants';
-
-export type TAppConfig = {
-  url: `https://${string}`;
-  icon: ReactNode;
-};
+import { TAppConfig } from '../../types';
 
 const StyledApplicationLink = styled(animated.a)`
   position: relative;

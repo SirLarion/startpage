@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="114.94727mm"
+   height="114.94727mm"
+   viewBox="0 0 407.29349 407.29348"
+   id="svg2"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title5759">Netflix icon</title>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Netflix icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="matrix(0.99999763,0,0,0.99999763,-2.2895473,9.9417289)"
+     style="stroke-width:1;fill:#ffd02f;fill-opacity:1">
+    <rect
+       style="opacity:0.998;fill:#ffd02f;fill-opacity:1;stroke-width:2.83464;stroke-linecap:square;paint-order:stroke fill markers"
+       id="rect1159"
+       width="407.29349"
+       height="407.29349"
+       x="2.2895527"
+       y="-9.9417524"
+       ry="36.842911" />
+  </g>
+  <style
+     type="text/css"
+     id="style825">.st0{fill:#0acf83}.st1{fill:#a259ff}.st2{fill:#f24e1e}.st3{fill:#ff7262}.st4{fill:#1abcfe}</style>
+  <g
+     id="g1007"
+     transform="matrix(6.6977718,0,0,6.6977718,37.541521,42.899739)"
+     style="stroke-width:7.29019">
+    <path
+       d="M 32.708,6.4 H 27.584 L 32.133,13.45 22.516,6.4 H 17.392 L 21.941,15.638 12.324,6.4 H 7.2 L 11.674,18.326 7.2,41.6 h 5.124 L 21.941,16.645 17.392,41.6 h 5.124 L 32.133,14.458 27.584,41.6 h 5.124 L 42.4,11.785 Z"
+       fill="#050038"
+       id="path997"
+       style="stroke-width:24.33" />
+  </g>
+</svg>

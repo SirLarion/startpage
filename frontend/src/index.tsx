@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { ModeProvider } from './providers/ModeProvider';
+import { AppsProvider } from './providers/AppsProvider';
 import reportWebVitals from './reportWebVitals';
 
 import './global.css';
@@ -11,9 +11,9 @@ import './global.css';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ModeProvider>
+      <AppsProvider>
         <App />
-      </ModeProvider>
+      </AppsProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="114.94727mm"
+   height="114.94727mm"
+   viewBox="0 0 407.29349 407.29348"
+   id="svg2"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title5759">Netflix icon</title>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Netflix icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="matrix(0.99999763,0,0,0.99999763,-2.2895473,9.9417289)"
+     style="stroke-width:1;fill:#1e1e20;fill-opacity:1">
+    <rect
+       style="opacity:0.998;fill:#1e1e20;fill-opacity:1;stroke-width:2.83464;stroke-linecap:square;paint-order:stroke fill markers"
+       id="rect1159"
+       width="407.29349"
+       height="407.29349"
+       x="2.2895527"
+       y="-9.9417524"
+       ry="36.842911" />
+  </g>
+  <style
+     type="text/css"
+     id="style825">.st0{fill:#0acf83}.st1{fill:#a259ff}.st2{fill:#f24e1e}.st3{fill:#ff7262}.st4{fill:#1abcfe}</style>
+  <g
+     id="g847"
+     transform="matrix(0.94880318,0,0,0.94880318,108.76594,61.325785)"
+     style="stroke-width:8.23405">
+    <path
+       id="path0_fill"
+       class="st0"
+       d="m 50,300 c 27.6,0 50,-22.4 50,-50 V 200 H 50 c -27.6,0 -50,22.4 -50,50 0,27.6 22.4,50 50,50 z"
+       style="stroke-width:8.23405" />
+    <path
+       id="path1_fill"
+       class="st1"
+       d="m 0,150 c 0,-27.6 22.4,-50 50,-50 h 50 V 200 H 50 C 22.4,200 0,177.6 0,150 Z"
+       style="stroke-width:8.23405" />
+    <path
+       id="path1_fill_1_"
+       class="st2"
+       d="M 0,50 C 0,22.4 22.4,0 50,0 h 50 V 100 H 50 C 22.4,100 0,77.6 0,50 Z"
+       style="stroke-width:8.23405" />
+    <path
+       id="path2_fill"
+       class="st3"
+       d="m 100,0 h 50 c 27.6,0 50,22.4 50,50 0,27.6 -22.4,50 -50,50 h -50 z"
+       style="stroke-width:8.23405" />
+    <path
+       id="path3_fill"
+       class="st4"
+       d="m 200,150 c 0,27.6 -22.4,50 -50,50 -27.6,0 -50,-22.4 -50,-50 0,-27.6 22.4,-50 50,-50 27.6,0 50,22.4 50,50 z"
+       style="stroke-width:8.23405" />
+  </g>
+</svg>

@@ -1,18 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
 
-import {
-  ApplicationLink,
-  TAppConfig,
-  ENTERTAINMENT_LINKS,
-  PRODUCTION_LINKS,
-} from '../ApplicationLink';
-
-type TLinkSet = 'production' | 'entertainment';
-
-export interface ILinkContainerProps {
-  type: TLinkSet;
-}
+import { ApplicationLink } from '../ApplicationLink';
+import { AppsContext } from '../../providers/AppsProvider';
+import { TAppConfig } from '../../types';
+import { APPLICATION_LINKS } from '../../constants';
 
 const StyledLinkContainer = styled.div`
   display: grid;
@@ -20,15 +12,12 @@ const StyledLinkContainer = styled.div`
   grid-gap: 2rem;
 `;
 
-export const LinkContainer: FC<ILinkContainerProps> = ({
-  type,
-  ...restProps
-}) => {
-  const links = type === 'production' ? PRODUCTION_LINKS : ENTERTAINMENT_LINKS;
-
+export const LinkContainer: FC = ({ ...restProps }) => {
+  const appInfo = useContext(AppsContext);
+  const selected = appInfo?.apps.map((a) => APPLICATION_LINKS[a]) || [];
   return (
     <StyledLinkContainer {...restProps}>
-      {links.map((link: TAppConfig, index: number) => (
+      {selected.map((link: TAppConfig, index: number) => (
         <ApplicationLink {...link} key={index} delay={index * 100} />
       ))}
     </StyledLinkContainer>

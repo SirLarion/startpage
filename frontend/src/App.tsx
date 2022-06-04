@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import { ModeContext } from './providers/ModeProvider';
 import { LinkContainer } from './components/LinkContainer';
+import { AppsProvider } from './providers/AppsProvider';
+import { AppSelectContainer } from './components/AppSelectContainer';
 
 const StyledApp = styled.div`
   height: 100vh;
@@ -15,24 +16,14 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
-  const navigate = useNavigate();
-  const mode = useContext(ModeContext);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => navigate(mode), []);
-
   return (
     <StyledApp>
-      <Routes>
-        <Route
-          path="/production"
-          element={<LinkContainer type="production" />}
-        />
-        <Route
-          path="/entertainment"
-          element={<LinkContainer type="entertainment" />}
-        />
-      </Routes>
+      <AppsProvider>
+        <Routes>
+          <Route path="/" element={<LinkContainer />} />
+          <Route path="/select" element={<AppSelectContainer />} />
+        </Routes>
+      </AppsProvider>
     </StyledApp>
   );
 };
