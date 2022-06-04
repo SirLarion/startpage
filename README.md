@@ -1,5 +1,7 @@
 # Startpage
 
+<img src="production.gif"/>
+
 ### Requirements
 
 Node and npm. Tested only on Manjaro Linux
