@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/home/sirlarion/repos/startpage/scripts/startup.sh --no-browser
+ExecStart=/home/sirlarion/repos/startpage/scripts/startup.sh
 ExecStop=/usr/bin/pkill node
 
 [Install]
