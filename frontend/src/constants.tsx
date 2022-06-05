@@ -15,6 +15,8 @@ import mycourses from './assets/mycourses.svg';
 import aplus from './assets/aplus.svg';
 import miro from './assets/miro.svg';
 import figma from './assets/figma.svg';
+import steam from './assets/steam.svg';
+import vscode from './assets/vscode.svg';
 
 import { TAppMap } from './types';
 
@@ -40,6 +42,8 @@ export const APPLICATION_NAMES = [
   'aplus',
   'miro',
   'figma',
+  'steam',
+  'vscode',
 ] as const;
 
 export const APPLICATION_LINKS: TAppMap = {
@@ -98,5 +102,13 @@ export const APPLICATION_LINKS: TAppMap = {
   figma: {
     url: 'https://figma.com/',
     icon: <StyledIcon src={figma} alt="figma" />,
+  },
+  steam: {
+    url: 'http://localhost:12345/run/steam',
+    icon: <StyledIcon src={steam} alt="steam" />,
+  },
+  vscode: {
+    url: 'http://localhost:12345/run/code',
+    icon: <StyledIcon src={vscode} alt="vscode" />,
   },
 };

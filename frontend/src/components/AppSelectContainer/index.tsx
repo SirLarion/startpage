@@ -33,7 +33,7 @@ export const AppSelectContainer: FC = ({ ...restProps }) => {
   };
 
   const handleSubmitSelection = () => {
-    axios.post('http://localhost:5000/applications', selection);
+    axios.post('http://localhost:12345/applications', selection);
   };
 
   useEffect(() => {
