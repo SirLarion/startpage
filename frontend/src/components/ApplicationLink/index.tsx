@@ -1,16 +1,16 @@
-import React, { FC, useState } from 'react';
-import styled from 'styled-components';
-import { useSpring, animated, config } from 'react-spring';
-import axios from 'axios';
+import React, { FC, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { useSpring, animated, config } from "react-spring";
+import axios from "axios";
 
-import { TAppConfig } from '../../types';
+import { TAppConfig } from "../../types";
 
 const StyledApplicationLink = styled(animated.a)`
   position: relative;
-`;
 
-const StyledApplicationButton = styled(animated.div)`
-  position: relative;
+  :focus-visible {
+    outline: none;
+  }
 `;
 
 const IconWrapper: FC<{ animationDelay: number }> = ({
@@ -22,52 +22,57 @@ const IconWrapper: FC<{ animationDelay: number }> = ({
     delay: animationDelay,
     from: {
       opacity: 0,
-      transform: 'scale(0.8)',
+      transform: "scale(0.8)",
     },
     to: {
       opacity: 1,
-      transform: 'scale(1)',
+      transform: "scale(1)",
     },
   });
   return <animated.div style={spring}>{children}</animated.div>;
 };
 
-export const ApplicationLink: FC<TAppConfig & { delay: number }> = ({
+export interface IApplicationLinkProps extends TAppConfig {
+  delay: number;
+  selected?: boolean;
+  setSelected?: (value: boolean) => void;
+}
+
+export const ApplicationLink: FC<IApplicationLinkProps> = ({
   url,
   icon,
   delay,
+  selected = false,
+  setSelected = () => {},
   ...restProps
 }) => {
-  const [isHover, setHover] = useState(false);
-  const isLocal = url.startsWith('http://localhost');
-
+  const linkRef = useRef<HTMLAnchorElement | null>(null);
   const { scale } = useSpring({
-    scale: isHover ? 1.1 : 1,
+    scale: selected ? 1.1 : 1,
   });
 
   const getLocal = () => axios.get(url);
 
-  if (isLocal) {
-    return (
-      <StyledApplicationButton
-        style={{ scale }}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onClick={getLocal}
-        {...restProps}
-      >
-        <IconWrapper animationDelay={delay}>{icon}</IconWrapper>
-      </StyledApplicationButton>
-    );
-  }
+  const conditionalProps = url.startsWith("http://localhost")
+    ? {
+        onClick: getLocal,
+      }
+    : { target: "_blank", rel: "noopener noreferrer", href: url };
+
+  useEffect(() => {
+    if (linkRef && linkRef.current && selected) {
+      linkRef.current.focus();
+    }
+  }, [selected]);
+
   return (
     <StyledApplicationLink
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
+      ref={linkRef}
       style={{ scale }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setSelected(true)}
+      onMouseLeave={() => setSelected(false)}
+      onKeyDown={console.log}
+      {...conditionalProps}
       {...restProps}
     >
       <IconWrapper animationDelay={delay}>{icon}</IconWrapper>

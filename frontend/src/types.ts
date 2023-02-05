@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { APPLICATION_NAMES } from './constants';
+import { ReactNode } from "react";
+import { APPLICATION_NAMES } from "./constants";
 
 export type TAppName = typeof APPLICATION_NAMES[number];
 

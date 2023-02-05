@@ -1,9 +1,9 @@
-import React, { ChangeEvent, FC, useState } from 'react';
-import styled from 'styled-components';
+import React, { ChangeEvent, FC, useState } from "react";
+import styled from "styled-components";
 
-import { TAppConfig, TAppName } from '../../types';
-import { APPLICATION_NAMES } from '../../constants';
-import { ApplicationLink } from '../ApplicationLink';
+import { TAppConfig, TAppName } from "../../types";
+import { APPLICATION_NAMES } from "../../constants";
+import { ApplicationLink } from "../ApplicationLink";
 
 export interface ISelectionComponentProps {
   app: TAppConfig;
@@ -23,8 +23,8 @@ export const SelectionComponent: FC<ISelectionComponentProps> = ({
   setSelection,
   ...restProps
 }) => {
-  const [input, setInput] = useState('');
-  const [isError, setError] = useState(false);
+  const [input, setInput] = useState("");
+  const [, setError] = useState(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

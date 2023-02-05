@@ -4,7 +4,7 @@
 
 ### Requirements
 
-Node and npm. Tested only on Manjaro Linux
+Node and npm + `npm install` in both ./backend and ./frontend. Tested on Manjaro & Arch Linux
 
 ### Setup
 
@@ -14,7 +14,11 @@ Node and npm. Tested only on Manjaro Linux
 
 ### Autostarting
 
-For systemd based distros, there is `scripts/startpage.service` for autostarting Node. Autostarting Firefox in Kiosk mode can be done with `scripts/kiosk.desktop`
+`startup.sh` can be called in any desired way. For distros with `systemd`, there's also a ready-made `startpage.service`. Autostarting Firefox in Kiosk mode (after starting node) can be done with `scripts/kiosk.desktop` (KDE)
+
+### Known issues
+
+28.10.2022: `startup.sh` doesn't work as a login script in KDE Plasma. A workaround is to create another script that calls `startup.sh`
 
 ### License
 

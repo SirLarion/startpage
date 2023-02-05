@@ -1,10 +1,11 @@
-import React, { FC, useContext } from 'react';
-import styled from 'styled-components';
+import React, { FC, useContext } from "react";
+import styled from "styled-components";
 
-import { ApplicationLink } from '../ApplicationLink';
-import { AppsContext } from '../../providers/AppsProvider';
-import { TAppConfig } from '../../types';
-import { APPLICATION_LINKS } from '../../constants';
+import { ApplicationLink } from "../ApplicationLink";
+import { AppsContext } from "../../providers/AppsProvider";
+import { TAppConfig } from "../../types";
+import { APPLICATION_LINKS } from "../../constants";
+import { useLinkSelector } from "./useLinkSelector";
 
 const StyledLinkContainer = styled.div`
   display: grid;
@@ -13,12 +14,20 @@ const StyledLinkContainer = styled.div`
 `;
 
 export const LinkContainer: FC = ({ ...restProps }) => {
+  const { wrapperRef, selectedIndex, setSelectedIndex } = useLinkSelector();
+
   const appInfo = useContext(AppsContext);
-  const selected = appInfo?.apps.map((a) => APPLICATION_LINKS[a]) || [];
+  const selected = appInfo?.apps.map(a => APPLICATION_LINKS[a]) || [];
   return (
-    <StyledLinkContainer {...restProps}>
+    <StyledLinkContainer ref={wrapperRef} {...restProps}>
       {selected.map((link: TAppConfig, index: number) => (
-        <ApplicationLink {...link} key={index} delay={index * 100} />
+        <ApplicationLink
+          {...link}
+          key={index}
+          selected={index === selectedIndex}
+          setSelected={() => setSelectedIndex(index)}
+          delay={index * 100}
+        />
       ))}
     </StyledLinkContainer>
   );
