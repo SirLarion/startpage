@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated, config } from "react-spring";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { TAppConfig } from "../../types";
 
@@ -50,14 +51,22 @@ export const ApplicationLink: FC<IApplicationLinkProps> = ({
   const { scale } = useSpring({
     scale: selected ? 1.1 : 1,
   });
+  const navigate = useNavigate();
 
   const getLocal = () => axios.get(url);
 
-  const conditionalProps = url.startsWith("http://localhost")
-    ? {
+  const getConditionalProps = () => {
+    if (url.startsWith("http://localhost")) {
+      return {
         onClick: getLocal,
-      }
-    : { target: "_blank", rel: "noopener noreferrer", href: url };
+      };
+    } else if (url.startsWith("http")) {
+      return { target: "_blank", rel: "noopener noreferrer", href: url };
+    }
+    return {
+      onClick: () => navigate(url),
+    };
+  };
 
   useEffect(() => {
     if (linkRef && linkRef.current && selected) {
@@ -71,8 +80,7 @@ export const ApplicationLink: FC<IApplicationLinkProps> = ({
       style={{ scale }}
       onMouseEnter={() => setSelected(true)}
       onMouseLeave={() => setSelected(false)}
-      onKeyDown={console.log}
-      {...conditionalProps}
+      {...getConditionalProps()}
       {...restProps}
     >
       <IconWrapper animationDelay={delay}>{icon}</IconWrapper>

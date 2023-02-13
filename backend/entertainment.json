@@ -1,1 +1,4 @@
-{"mode":"entertainment","apps":["netflix","disney","hbo","prime","youtube","spotify"]}
+{
+  "mode": "entertainment",
+  "apps": ["netflix", "pirate", "hbo", "prime", "youtube", "spotify"]
+}

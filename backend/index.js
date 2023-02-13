@@ -1,40 +1,70 @@
-const cors = require('cors');
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const { exec } = require('child_process');
-require('dotenv').config();
+const cors = require("cors");
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const { exec } = require("child_process");
+require("dotenv").config();
 
-const entertainmentPath = path.join(process.cwd(), 'entertainment.json');
-const productionPath = path.join(process.cwd(), 'production.json');
+const VALID_CONTENT_TYPES = ["movies", "series"];
 
-const MODE = process.env.MODE;
-const PORT = process.env.PORT;
+const entertainmentPath = path.join(process.cwd(), "entertainment.json");
+const productionPath = path.join(process.cwd(), "production.json");
 
-const filePath = MODE === 'entertainment' ? entertainmentPath : productionPath;
+const { MODE, PORT, THEATER_PATH } = process.env;
+
+const filePath = MODE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
+const getVideoFileOpener = videoDir => (err, files) => {
+  if (!err) {
+    const fileName = files.find(
+      file => file.endsWith(".mkv") || file.endsWith(".mp4")
+    );
+    if (fileName !== undefined) {
+      exec(`vlc ${videoDir}/${fileName}`);
+    }
+  }
+  return undefined;
+};
+
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, "build")));
 
-app.get('/applications', function (req, res) {
+app.get("/applications", (req, res) => {
   res.sendFile(filePath);
 });
 
-app.post('/applications', function (req, res) {
+app.post("/applications", (req, res) => {
   fs.writeFile(filePath, JSON.stringify(req.body), () => {});
 });
 
-app.get('/run/:cmd', function (req, res) {
+app.get("/run/:cmd", (req, res) => {
   const cmd = req.params.cmd;
   console.log(`Running command: '${cmd}'`);
   exec(cmd);
 });
 
-app.get(['/', '/*'], function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("/content/:contentType", (req, res) => {
+  const content = req.params.contentType;
+  if (VALID_CONTENT_TYPES.includes(content)) {
+    fs.readdir(`${THEATER_PATH}/${content}`, (err, files) => {
+      if (!err) {
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify(files));
+      }
+    });
+  }
+});
+
+app.get("/play/movie/:name", (req, res) => {
+  const moviePath = `${THEATER_PATH}/movies/${req.params.name}`;
+  fs.readdir(moviePath, getVideoFileOpener(moviePath));
+});
+
+app.get(["/", "/*"], (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.listen(PORT, () => {
