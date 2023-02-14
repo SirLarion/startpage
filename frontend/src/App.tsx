@@ -14,6 +14,7 @@ const StyledApp = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${p => p.theme.background.primary};
+  overflow-x: hidden;
 `;
 
 const App = () => {

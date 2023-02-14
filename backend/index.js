@@ -6,6 +6,7 @@ const { exec } = require("child_process");
 require("dotenv").config();
 
 const VALID_CONTENT_TYPES = ["movies", "series"];
+const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
 
 const entertainmentPath = path.join(process.cwd(), "entertainment.json");
 const productionPath = path.join(process.cwd(), "production.json");
@@ -22,7 +23,7 @@ const getVideoFileOpener = videoDir => (err, files) => {
       file => file.endsWith(".mkv") || file.endsWith(".mp4")
     );
     if (fileName !== undefined) {
-      exec(`vlc ${videoDir}/${fileName}`);
+      exec(`vlc '${videoDir}/${fileName}'`);
     }
   }
   return undefined;
@@ -46,6 +47,21 @@ app.get("/run/:cmd", (req, res) => {
   exec(cmd);
 });
 
+app.get("/content/:contentType/:name", (req, res) => {
+  const content = req.params.contentType;
+  const contentPath = `${THEATER_PATH}/${content}/${req.params.name}`;
+  if (VALID_CONTENT_TYPES.includes(content)) {
+    fs.readdir(contentPath, (err, files) => {
+      if (!err) {
+        const image = files.find(f => f === THUMBNAIL_FILE_NAME);
+        if (image !== undefined) {
+          res.sendFile(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
+        }
+      }
+    });
+  }
+});
+
 app.get("/content/:contentType", (req, res) => {
   const content = req.params.contentType;
   if (VALID_CONTENT_TYPES.includes(content)) {
@@ -58,7 +74,7 @@ app.get("/content/:contentType", (req, res) => {
   }
 });
 
-app.get("/play/movie/:name", (req, res) => {
+app.get("/play/movies/:name", (req, res) => {
   const moviePath = `${THEATER_PATH}/movies/${req.params.name}`;
   fs.readdir(moviePath, getVideoFileOpener(moviePath));
 });
