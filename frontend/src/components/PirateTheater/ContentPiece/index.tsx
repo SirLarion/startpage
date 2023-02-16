@@ -5,16 +5,14 @@ import styled from "styled-components";
 export interface IContentPieceProps {
   name: string;
   type: "movies" | "series";
+  index: number;
   play: (contentPath: string) => void;
 }
 
-const StyledContentPiece = styled.div`
+const StyledContentPiece = styled(animated.div)`
   min-width: 14rem;
   max-width: 14rem;
   cursor: pointer;
-  > :last-child {
-    margin-top: 1rem;
-  }
 `;
 
 const StyledImage = styled(animated.img)`
@@ -24,10 +22,23 @@ const StyledImage = styled(animated.img)`
 export const ContentPiece: FC<IContentPieceProps> = ({
   name,
   type,
+  index,
   play,
   ...restProps
 }) => {
   const [hover, setHover] = useState(false);
+
+  const entranceSpring = useSpring({
+    from: {
+      opacity: 0,
+      transform: "translate3d(0, 2rem, 0)",
+    },
+    to: {
+      opacity: 1,
+      transform: "translate3d(0, 0rem, 0)",
+    },
+    delay: index * 70,
+  });
 
   const hoverSpring = useSpring({
     transform: hover ? "scale3d(1.1, 1.1, 1)" : "scale3d(1, 1, 1)",
@@ -35,6 +46,7 @@ export const ContentPiece: FC<IContentPieceProps> = ({
 
   return (
     <StyledContentPiece
+      style={entranceSpring}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setTimeout(() => setHover(false), 100)}
       onClick={() => play(`${type}/${name}`)}

@@ -11,9 +11,9 @@ const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
 const entertainmentPath = path.join(process.cwd(), "entertainment.json");
 const productionPath = path.join(process.cwd(), "production.json");
 
-const { MODE, PORT, THEATER_PATH } = process.env;
+const { TYPE, PORT, THEATER_PATH } = process.env;
 
-const filePath = MODE === "entertainment" ? entertainmentPath : productionPath;
+const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 

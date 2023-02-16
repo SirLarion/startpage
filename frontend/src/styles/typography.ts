@@ -8,7 +8,7 @@ export const textBase = css`
 
 export const Heading1 = styled.h1`
   ${textBase}
-  font-size: 6rem;
+  font-size: 4.5rem;
 `;
 
 export const Heading2 = styled.h2`
