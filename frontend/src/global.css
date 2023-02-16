@@ -1,5 +1,14 @@
 /* Useful global CSS styles */
 
+@font-face {
+  font-family: "Montserrat";
+  src: url(./assets/Montserrat.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Cabin";
+  src: url(./assets/Cabin.ttf) format("truetype");
+}
 /* Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -30,6 +39,14 @@ dd {
 html,
 body {
   height: 100%;
+}
+
+body {
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* Improve the typography across the site. */

@@ -8,12 +8,12 @@ import { AppSelectContainer } from "./components/AppSelectContainer";
 import { PirateTheater } from "./components/PirateTheater";
 
 const StyledApp = styled.div`
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  max-width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${p => p.theme.background.primary};
+  background-color: ${(p) => p.theme.background.primary};
   overflow-x: hidden;
 `;
 

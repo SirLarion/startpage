@@ -1,32 +1,52 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
+
+import { Heading1, Heading2 } from "../../styles/typography";
 import { ContentPiece } from "./ContentPiece";
 import { FadeToBlack } from "./FadeToBlack";
 import { useLoadContent } from "./hooks/useLoadContent";
 import { usePlayContent } from "./hooks/usePlayContent";
 
-const ContentSection = styled.section`
-  max-width: 100vw;
-  width: 100vw;
-  overflow-x: hidden;
+import piratePlain from "../../assets/pirate_plain.svg";
+import { hideScrollbar } from "../../styles/common";
+
+const PIRATE_LOGO_SIZE = 96;
+
+const StyledPirateTheater = styled.div`
+  margin-bottom: 5rem;
 `;
 
-const SectionLabel = styled.h1`
-  font-size: 6rem;
-  color: ${theme.dark.foreground.primary};
+const Header = styled.header`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1.5rem;
+
+  > ${Heading2} {
+    font-weight: 400;
+    font-family: "Cabin";
+  }
+`;
+
+const Logo = styled.img`
+  margin: 0 0.5rem;
+`;
+
+const ContentSection = styled.section`
+  width: 100vw;
+  > * {
+    padding-left: 3rem;
+  }
 `;
 
 const SectionBody = styled.div`
+  max-width: 100vw;
+  overflow-x: scroll;
   display: flex;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   gap: 1.5rem;
-`;
-
-const StyledPirateTheater = styled.div`
-  padding: 3rem;
-  > :not(:last-child) {
-    margin-bottom: 2rem;
-  }
+  ${hideScrollbar}
 `;
 
 export const PirateTheater: FC = () => {
@@ -36,8 +56,18 @@ export const PirateTheater: FC = () => {
     return (
       <>
         <StyledPirateTheater>
+          <Header>
+            <Heading2>Pirate</Heading2>
+            <Logo
+              width={PIRATE_LOGO_SIZE}
+              height={PIRATE_LOGO_SIZE}
+              src={piratePlain}
+              alt="yarr im a pirate"
+            />
+            <Heading2>Theater</Heading2>
+          </Header>
           <ContentSection>
-            <SectionLabel>Movies</SectionLabel>
+            <Heading1>Movies</Heading1>
             <SectionBody>
               {movieList.map((movie, i) => (
                 <ContentPiece
@@ -50,7 +80,7 @@ export const PirateTheater: FC = () => {
             </SectionBody>
           </ContentSection>
           <ContentSection>
-            <SectionLabel>Series</SectionLabel>
+            <Heading1>Series</Heading1>
             <SectionBody>
               {seriesList.map((series, i) => (
                 <ContentPiece
@@ -67,5 +97,5 @@ export const PirateTheater: FC = () => {
       </>
     );
   }
-  return <div>borka borka</div>;
+  return null;
 };

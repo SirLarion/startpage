@@ -3,19 +3,19 @@ type TTheme = Record<string, Record<string, THexColor>>;
 
 const light: TTheme = {
   foreground: {
-    primary: '#101010',
+    primary: "#101010",
   },
   background: {
-    primary: '#FFFFF0',
+    primary: "#FFFFF0",
   },
 };
 
 const dark: TTheme = {
   foreground: {
-    primary: '#FDFDFF',
+    primary: "#DDDDDF",
   },
   background: {
-    primary: '#000000',
+    primary: "#000000",
   },
 };
 

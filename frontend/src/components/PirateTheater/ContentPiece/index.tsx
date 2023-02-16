@@ -2,8 +2,6 @@ import React, { FC, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 
-import { theme } from "../../../styles/theme";
-
 export interface IContentPieceProps {
   name: string;
   type: "movies" | "series";
@@ -11,12 +9,11 @@ export interface IContentPieceProps {
 }
 
 const StyledContentPiece = styled.div`
-  width: 14rem;
+  min-width: 14rem;
   max-width: 14rem;
   cursor: pointer;
-  > h4 {
+  > :last-child {
     margin-top: 1rem;
-    color: ${theme.dark.foreground.primary};
   }
 `;
 
@@ -37,16 +34,18 @@ export const ContentPiece: FC<IContentPieceProps> = ({
   });
 
   return (
-    <StyledContentPiece onClick={() => play(`${type}/${name}`)} {...restProps}>
+    <StyledContentPiece
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setTimeout(() => setHover(false), 100)}
+      onClick={() => play(`${type}/${name}`)}
+      {...restProps}
+    >
       <StyledImage
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setTimeout(() => setHover(false), 100)}
         style={hoverSpring}
         width={224}
         src={`http://localhost:12345/content/${type}/${name}`}
         alt={name}
       />
-      <h4>{name}</h4>
     </StyledContentPiece>
   );
 };

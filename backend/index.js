@@ -17,10 +17,10 @@ const filePath = MODE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
-const getVideoFileOpener = videoDir => (err, files) => {
+const getVideoFileOpener = (videoDir) => (err, files) => {
   if (!err) {
     const fileName = files.find(
-      file => file.endsWith(".mkv") || file.endsWith(".mp4")
+      (file) => file.endsWith(".mkv") || file.endsWith(".mp4")
     );
     if (fileName !== undefined) {
       exec(`vlc '${videoDir}/${fileName}'`);
@@ -53,7 +53,7 @@ app.get("/content/:contentType/:name", (req, res) => {
   if (VALID_CONTENT_TYPES.includes(content)) {
     fs.readdir(contentPath, (err, files) => {
       if (!err) {
-        const image = files.find(f => f === THUMBNAIL_FILE_NAME);
+        const image = files.find((f) => f === THUMBNAIL_FILE_NAME);
         if (image !== undefined) {
           res.sendFile(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
         }
