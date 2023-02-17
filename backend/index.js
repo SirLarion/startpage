@@ -11,7 +11,7 @@ const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
 const entertainmentPath = path.join(process.cwd(), "entertainment.json");
 const productionPath = path.join(process.cwd(), "production.json");
 
-const { TYPE, PORT, THEATER_PATH } = process.env;
+const { TYPE, PORT, THEATER_PATH, DISK_UUID } = process.env;
 
 const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
@@ -45,6 +45,19 @@ app.get("/run/:cmd", (req, res) => {
   const cmd = req.params.cmd;
   console.log(`Running command: '${cmd}'`);
   exec(cmd);
+});
+
+app.get("/run/pirate-init", (req, res) => {
+  if (DISK_UUID !== undefined) {
+    exec(`sudo mount -t ntfs UUID=${DISK_UUID} /mnt/hdd`);
+    setTimeout(() => {
+      fs.readdir(THEATER_PATH, (err) => {
+        if (!err) {
+          res.status(200);
+        }
+      });
+    }, 500);
+  }
 });
 
 app.get("/content/:contentType/:name", (req, res) => {
@@ -83,6 +96,6 @@ app.get(["/", "/*"], (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "127.0.0.1", () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
