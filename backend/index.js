@@ -45,7 +45,9 @@ app.get("/run/pirate-init", (req, res) => {
   fs.readdir(THEATER_PATH, async err => {
     if (err) {
       if (DISK_UUID !== undefined) {
-        exec(`sudo mount -t ntfs UUID=${DISK_UUID} /mnt/hdd`);
+        exec(
+          `cat ${process.cwd()}/.env.pwd | sudo -S mount -t ntfs UUID=${DISK_UUID} /mnt/hdd > /dev/null 2>&1`
+        );
         await new Promise(r => setTimeout(r, 500));
 
         fs.readdir(THEATER_PATH, err => {
