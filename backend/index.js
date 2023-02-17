@@ -17,10 +17,10 @@ const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
-const getVideoFileOpener = (videoDir) => (err, files) => {
+const getVideoFileOpener = videoDir => (err, files) => {
   if (!err) {
     const fileName = files.find(
-      (file) => file.endsWith(".mkv") || file.endsWith(".mp4")
+      file => file.endsWith(".mkv") || file.endsWith(".mp4")
     );
     if (fileName !== undefined) {
       exec(`vlc '${videoDir}/${fileName}'`);
@@ -41,23 +41,36 @@ app.post("/applications", (req, res) => {
   fs.writeFile(filePath, JSON.stringify(req.body), () => {});
 });
 
+app.get("/run/pirate-init", (req, res) => {
+  fs.readdir(THEATER_PATH, async err => {
+    if (err) {
+      if (DISK_UUID !== undefined) {
+        exec(`sudo mount -t ntfs UUID=${DISK_UUID} /mnt/hdd`);
+        await new Promise(r => setTimeout(r, 500));
+
+        fs.readdir(THEATER_PATH, err => {
+          if (!err) {
+            res.status(200);
+          } else {
+            res.write("Accessing content storage failed.");
+            res.status(500);
+          }
+        });
+      } else {
+        res.write("Accessing content storage failed.");
+        res.status(500);
+      }
+    } else {
+      res.status(200);
+    }
+    res.end();
+  });
+});
+
 app.get("/run/:cmd", (req, res) => {
   const cmd = req.params.cmd;
   console.log(`Running command: '${cmd}'`);
   exec(cmd);
-});
-
-app.get("/run/pirate-init", (req, res) => {
-  if (DISK_UUID !== undefined) {
-    exec(`sudo mount -t ntfs UUID=${DISK_UUID} /mnt/hdd`);
-    setTimeout(() => {
-      fs.readdir(THEATER_PATH, (err) => {
-        if (!err) {
-          res.status(200);
-        }
-      });
-    }, 500);
-  }
 });
 
 app.get("/content/:contentType/:name", (req, res) => {
@@ -66,7 +79,7 @@ app.get("/content/:contentType/:name", (req, res) => {
   if (VALID_CONTENT_TYPES.includes(content)) {
     fs.readdir(contentPath, (err, files) => {
       if (!err) {
-        const image = files.find((f) => f === THUMBNAIL_FILE_NAME);
+        const image = files.find(f => f === THUMBNAIL_FILE_NAME);
         if (image !== undefined) {
           res.sendFile(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
         }

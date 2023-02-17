@@ -1,14 +1,33 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+type TInitResponse = {
+  status: "success" | "fail" | "pending";
+  msg?: string;
+};
+
 export const useLoadContent = () => {
+  const [init, setInit] = useState<TInitResponse>({ status: "pending" });
+
   const [moviesLoading, setMoviesLoading] = useState(false);
   const [seriesLoading, setSeriesLoading] = useState(false);
   const [movieList, setMovieList] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
 
   useEffect(() => {
+    axios.get("http://localhost:12345/run/pirate-init").then(res => {
+      if (res.status === 200) {
+        setInit({ status: "success" });
+      } else {
+        setInit({ status: "fail", msg: res.data });
+      }
+    });
+  }, []);
+
+  console.log("init", init);
+  useEffect(() => {
     if (
+      init.status === "success" &&
       !(moviesLoading || seriesLoading) &&
       movieList.length === 0 &&
       seriesList.length === 0
@@ -25,11 +44,17 @@ export const useLoadContent = () => {
         setSeriesLoading(false);
       });
     }
-  }, [movieList.length, moviesLoading, seriesList.length, seriesLoading]);
+  }, [
+    init.status,
+    movieList.length,
+    moviesLoading,
+    seriesList.length,
+    seriesLoading,
+  ]);
 
   return {
     movieList,
     seriesList,
-    loading: moviesLoading || seriesLoading,
+    loading: init.status === "pending" || moviesLoading || seriesLoading,
   };
 };
