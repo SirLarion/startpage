@@ -6,6 +6,7 @@ import { LinkContainer } from "./components/LinkContainer";
 import { AppsProvider } from "./providers/AppsProvider";
 import { AppSelectContainer } from "./components/AppSelectContainer";
 import { PirateTheater } from "./components/PirateTheater";
+import { hideScrollbar } from "./styles/common";
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -13,8 +14,9 @@ const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(p) => p.theme.background.primary};
+  background-color: ${p => p.theme.background.primary};
   overflow-x: hidden;
+  ${hideScrollbar}
 `;
 
 const App = () => {

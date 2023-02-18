@@ -10,8 +10,8 @@ const StyledFadeToBlack = styled(animated.div)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 200vw;
+  height: 200vh;
   z-index: 100;
   background-color: black;
 `;

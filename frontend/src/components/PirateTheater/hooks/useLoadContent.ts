@@ -6,13 +6,22 @@ type TInitResponse = {
   msg?: string;
 };
 
+type TContentObject = {
+  loading: boolean;
+  list: string[];
+};
+
 export const useLoadContent = () => {
   const [init, setInit] = useState<TInitResponse>({ status: "pending" });
 
-  const [moviesLoading, setMoviesLoading] = useState(false);
-  const [seriesLoading, setSeriesLoading] = useState(false);
-  const [movieList, setMovieList] = useState([]);
-  const [seriesList, setSeriesList] = useState([]);
+  const [movies, setMovies] = useState<TContentObject>({
+    loading: false,
+    list: [],
+  });
+  const [series, setSeries] = useState<TContentObject>({
+    loading: false,
+    list: [],
+  });
 
   useEffect(() => {
     axios.get("http://localhost:12345/run/pirate-init").then(res => {
@@ -28,33 +37,33 @@ export const useLoadContent = () => {
   useEffect(() => {
     if (
       init.status === "success" &&
-      !(moviesLoading || seriesLoading) &&
-      movieList.length === 0 &&
-      seriesList.length === 0
+      !(movies.loading || series.loading) &&
+      movies.list.length === 0 &&
+      movies.list.length === 0
     ) {
-      setMoviesLoading(true);
-      setSeriesLoading(true);
+      setMovies(obj => ({ ...obj, loading: true }));
+      setSeries(obj => ({ ...obj, loading: true }));
 
       axios.get("http://localhost:12345/content/movies").then(res => {
-        setMovieList(res.data);
-        setMoviesLoading(false);
+        setMovies(obj => ({
+          ...obj,
+          loading: false,
+          list: res.data.concat(res.data),
+        }));
       });
       axios.get("http://localhost:12345/content/series").then(res => {
-        setSeriesList(res.data);
-        setSeriesLoading(false);
+        setSeries(obj => ({
+          ...obj,
+          loading: false,
+          list: res.data.concat(res.data),
+        }));
       });
     }
-  }, [
-    init.status,
-    movieList.length,
-    moviesLoading,
-    seriesList.length,
-    seriesLoading,
-  ]);
+  }, [init.status, movies.list.length, movies.loading, series.loading]);
 
   return {
-    movieList,
-    seriesList,
-    loading: init.status === "pending" || moviesLoading || seriesLoading,
+    movieList: movies.list,
+    seriesList: series.list,
+    loading: init.status === "pending" || movies.loading || series.loading,
   };
 };
