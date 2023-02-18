@@ -45,19 +45,24 @@ app.get("/run/pirate-init", (req, res) => {
   fs.readdir(THEATER_PATH, async err => {
     if (err) {
       if (DISK_UUID !== undefined) {
+        let cmdDone = false;
         exec(
-          `cat ${process.cwd()}/.env.pwd | sudo -S mount -t ntfs UUID=${DISK_UUID} /mnt/hdd > /dev/null 2>&1`
-        );
-        await new Promise(r => setTimeout(r, 500));
-
-        fs.readdir(THEATER_PATH, err => {
-          if (!err) {
-            res.status(200);
-          } else {
-            res.write("Accessing content storage failed.");
-            res.status(500);
+          `cat ${process.cwd()}/.env.pwd | sudo -S mount -t ntfs UUID=${DISK_UUID} /mnt/hdd > /dev/null 2>&1`,
+          () => {
+            fs.readdir(THEATER_PATH, err => {
+              if (!err) {
+                res.status(200);
+              } else {
+                res.write("Accessing content storage failed.");
+                res.status(500);
+              }
+            });
+            cmdDone = true;
           }
-        });
+        );
+        while (!cmdDone) {
+          await new Promise(r => setTimeout(r, 1));
+        }
       } else {
         res.write("Accessing content storage failed.");
         res.status(500);
