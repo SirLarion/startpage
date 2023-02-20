@@ -18,10 +18,12 @@ export const Heading2 = styled.h2`
 
 export const Heading3 = styled.h3`
   ${textBase}
+  font-size: 1.5rem;
 `;
 
 export const Heading4 = styled.h4`
   ${textBase}
+  font-size: 1.1rem;
 `;
 
 export const Text = styled.p`

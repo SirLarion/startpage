@@ -14,6 +14,10 @@ import { OpenContent } from "./OpenContent";
 
 const PIRATE_LOGO_SIZE = 64;
 
+const Wrapper = styled.div`
+  position: relative;
+`;
+
 const StyledPirateTheater = styled.div`
   margin-bottom: 5rem;
 `;
@@ -66,7 +70,7 @@ export const PirateTheater: FC = () => {
   const visibleMoviesAmount = Math.min(movieList.length, VISIBLE_CONTENT_MAX);
 
   return (
-    <>
+    <Wrapper>
       <StyledPirateTheater>
         <Header style={spring}>
           <Heading2>Pirate</Heading2>
@@ -125,6 +129,6 @@ export const PirateTheater: FC = () => {
         close={() => setOpenedContent(null)}
       />
       <FadeToBlack visible={playing} />
-    </>
+    </Wrapper>
   );
 };

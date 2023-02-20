@@ -16,6 +16,7 @@ const dark: TTheme = {
   },
   background: {
     primary: "#000000",
+    secondary: "#15202d",
   },
 };
 
