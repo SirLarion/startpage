@@ -33,35 +33,41 @@ const StyledContentReel = styled.div`
   }
 `;
 
-export const ContentReel: FC<IContentReelProps> = ({
-  items,
-  loading,
-  ...restProps
-}) => {
+const BasicReel = styled.div`
+  display: flex;
+  gap: 1.7rem;
+  margin-left: 5rem;
+`;
+
+export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
   const { ref, rotate } = useHandleReel();
+  const showCarousel = items.length > VISIBLE_CONTENT_MAX;
   return (
     <StyledContentReel>
-      {!loading && (
-        <>
-          <RotateLeft rotate={() => rotate("left")} />
-          <RotateRight rotate={() => rotate("right")} />
-          <AliceCarousel
-            ref={ref}
-            keyboardNavigation
-            disableDotsControls
-            disableButtonsControls
-            infinite={items.length > VISIBLE_CONTENT_MAX}
-            paddingLeft={80}
-            paddingRight={80}
-            responsive={{
-              0: {
-                items: VISIBLE_CONTENT_MAX,
-              },
-            }}
-            items={items}
-          />
-        </>
-      )}
+      {!loading &&
+        (showCarousel ? (
+          <>
+            <RotateLeft rotate={() => rotate("left")} />
+            <RotateRight rotate={() => rotate("right")} />
+            <AliceCarousel
+              ref={ref}
+              keyboardNavigation
+              disableDotsControls
+              disableButtonsControls
+              infinite
+              paddingLeft={80}
+              paddingRight={80}
+              responsive={{
+                0: {
+                  items: VISIBLE_CONTENT_MAX,
+                },
+              }}
+              items={items}
+            />
+          </>
+        ) : (
+          <BasicReel>{items}</BasicReel>
+        ))}
     </StyledContentReel>
   );
 };

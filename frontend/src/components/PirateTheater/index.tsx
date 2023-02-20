@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { animated, useSpring } from "react-spring";
+import { animated, config, useSpring } from "react-spring";
 
 import { Heading1, Heading2 } from "../../styles/typography";
 import { ContentPiece } from "./ContentPiece";
@@ -10,6 +10,7 @@ import { usePlayContent } from "./hooks/usePlayContent";
 
 import piratePlain from "../../assets/pirate_plain.svg";
 import { ContentReel, VISIBLE_CONTENT_MAX } from "./ContentReel";
+import { OpenContent } from "./OpenContent";
 
 const PIRATE_LOGO_SIZE = 64;
 
@@ -21,7 +22,7 @@ const Header = styled(animated.header)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 4rem;
 
   > ${Heading2} {
     font-weight: 400;
@@ -41,9 +42,14 @@ const ContentSection = styled(animated.section)`
   }
 `;
 
-export const PirateTheater: FC = () => {
-  const { movieList, seriesList, loading } = useLoadContent();
+export type TContent = {
+  type: "movies" | "series";
+  name: string;
+};
 
+export const PirateTheater: FC = () => {
+  const [openedContent, setOpenedContent] = useState<TContent | null>(null);
+  const { movieList, seriesList, loading } = useLoadContent();
   const { playContent, playing } = usePlayContent();
 
   const spring = useSpring({
@@ -53,7 +59,8 @@ export const PirateTheater: FC = () => {
     to: {
       opacity: 1,
     },
-    delay: 100,
+    delay: 1000,
+    config: config.molasses,
   });
 
   const visibleMoviesAmount = Math.min(movieList.length, VISIBLE_CONTENT_MAX);
@@ -71,37 +78,52 @@ export const PirateTheater: FC = () => {
           />
           <Heading2>Theater</Heading2>
         </Header>
-        <ContentSection style={spring}>
-          <Heading1>Movies</Heading1>
+        <ContentSection>
+          <animated.div style={spring}>
+            <Heading1>Movies</Heading1>
+          </animated.div>
           <ContentReel
-            items={movieList.map((movie, i) => (
-              <ContentPiece
-                key={`${movie}${i}`}
-                index={i + 1 + 3}
-                name={movie}
-                type="movies"
-                play={playContent}
-              />
-            ))}
+            items={movieList.map((movie, i) => {
+              const content: TContent = { type: "movies", name: movie };
+              return (
+                <ContentPiece
+                  key={`${movie}${i}`}
+                  index={i}
+                  extraDelay={2}
+                  content={content}
+                  open={() => setOpenedContent(content)}
+                />
+              );
+            })}
             loading={loading}
           />
         </ContentSection>
-        <ContentSection style={spring}>
-          <Heading1>Series</Heading1>
+        <ContentSection>
+          <animated.div style={spring}>
+            <Heading1>Series</Heading1>
+          </animated.div>
           <ContentReel
-            items={seriesList.map((series, i) => (
-              <ContentPiece
-                key={`${series}${i}`}
-                index={visibleMoviesAmount + i + 3}
-                name={series}
-                type="series"
-                play={playContent}
-              />
-            ))}
+            items={seriesList.map((series, i) => {
+              const content: TContent = { type: "series", name: series };
+              return (
+                <ContentPiece
+                  key={`${series}${i}`}
+                  index={i}
+                  extraDelay={visibleMoviesAmount}
+                  content={content}
+                  open={() => setOpenedContent(content)}
+                />
+              );
+            })}
             loading={loading}
           />
         </ContentSection>
       </StyledPirateTheater>
+      <OpenContent
+        content={openedContent}
+        play={playContent}
+        close={() => setOpenedContent(null)}
+      />
       <FadeToBlack visible={playing} />
     </>
   );

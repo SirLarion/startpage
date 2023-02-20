@@ -48,14 +48,14 @@ export const useLoadContent = () => {
         setMovies(obj => ({
           ...obj,
           loading: false,
-          list: res.data.concat(res.data),
+          list: res.data,
         }));
       });
       axios.get("http://localhost:12345/content/series").then(res => {
         setSeries(obj => ({
           ...obj,
           loading: false,
-          list: res.data.concat(res.data),
+          list: res.data,
         }));
       });
     }

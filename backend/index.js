@@ -2,7 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const { exec } = require("child_process");
+const { exec, execFile } = require("child_process");
 require("dotenv").config();
 
 const VALID_CONTENT_TYPES = ["movies", "series"];
@@ -23,9 +23,11 @@ const getVideoFileOpener = videoDir => (err, files) => {
       file => file.endsWith(".mkv") || file.endsWith(".mp4")
     );
     if (fileName !== undefined) {
-      exec(`vlc '${videoDir}/${fileName}'`);
+      console.log(`Attempting to play file: ${videoDir}/${fileName}`);
+      execFile("vlc", [`${videoDir}/${fileName}`]);
     }
   }
+  console.error(err);
   return undefined;
 };
 

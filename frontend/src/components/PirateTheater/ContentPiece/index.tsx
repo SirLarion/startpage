@@ -1,12 +1,14 @@
 import React, { FC, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
+import { TContent } from "..";
+import { VISIBLE_CONTENT_MAX } from "../ContentReel";
 
 export interface IContentPieceProps {
-  name: string;
-  type: "movies" | "series";
+  content: TContent;
   index: number;
-  play: (contentPath: string) => void;
+  extraDelay: number;
+  open: () => void;
 }
 
 const StyledContentPiece = styled(animated.div)`
@@ -20,10 +22,10 @@ const StyledImage = styled(animated.img)`
 `;
 
 export const ContentPiece: FC<IContentPieceProps> = ({
-  name,
-  type,
+  content,
   index,
-  play,
+  extraDelay,
+  open,
   ...restProps
 }) => {
   const [hover, setHover] = useState(false);
@@ -37,11 +39,14 @@ export const ContentPiece: FC<IContentPieceProps> = ({
       opacity: 1,
       transform: "translate3d(0, 0rem, 0)",
     },
-    delay: index * 70,
+    delay: index > VISIBLE_CONTENT_MAX ? 70 : (index + extraDelay) * 70,
   });
 
+  // Rotate as little as possible to force subpixel rendering on firefox
   const hoverSpring = useSpring({
-    transform: hover ? "scale3d(1.1, 1.1, 1)" : "scale3d(1, 1, 1)",
+    transform: hover
+      ? "scale3d(1.1, 1.1, 1) rotate3d(0, 0, 1, 0.05deg)"
+      : "scale3d(1, 1, 1) rotate3d(0, 0, 1, 0.05deg)",
   });
 
   return (
@@ -49,14 +54,14 @@ export const ContentPiece: FC<IContentPieceProps> = ({
       style={entranceSpring}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setTimeout(() => setHover(false), 100)}
-      onClick={() => play(`${type}/${name}`)}
+      onClick={open}
       {...restProps}
     >
       <StyledImage
         style={hoverSpring}
         width={224}
-        src={`http://localhost:12345/content/${type}/${name}`}
-        alt={name}
+        src={`http://localhost:12345/content/${content.type}/${content.name}`}
+        alt={content.name}
       />
     </StyledContentPiece>
   );
