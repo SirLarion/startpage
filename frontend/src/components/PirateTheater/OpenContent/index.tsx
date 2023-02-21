@@ -6,6 +6,9 @@ import { useSpring, animated } from "react-spring";
 import { TContent } from "..";
 import { Heading3, Heading4 } from "../../../styles/typography";
 import cross_button from "../../../assets/cross_button.svg";
+import play_button from "../../../assets/play_button.svg";
+import { Hoverable } from "../../Hoverable";
+import { useLoadContentInfo } from "../hooks/useLoadContentInfo";
 
 export interface IOpenContentProps {
   content: TContent | null;
@@ -31,12 +34,23 @@ const Image = styled.img`
   box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);
 `;
 
-const CloseButton = styled(animated.img)`
+const CloseButton = styled(Hoverable)`
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
   cursor: pointer;
   opacity: 0.7;
+`;
+
+const PlayButton = styled.div`
+  border-radius: 2rem;
+  margin-top: 1rem;
+  max-width: max-content;
+  background-color: ${(p) => p.theme.accent.red};
+
+  > :first-child {
+    padding: 0.75rem;
+  }
 `;
 
 const InfoBox = styled.section`
@@ -56,8 +70,8 @@ const StyledOpenContent = styled(animated.div)`
   display: flex;
   position: relative;
   border-radius: 0.5rem;
-  background-color: ${p => p.theme.background.secondary};
-  box-shadow: 0 0 5rem ${p => p.theme.background.primary};
+  background-color: ${(p) => p.theme.background.secondary};
+  box-shadow: 0 0 5rem ${(p) => p.theme.background.primary};
 `;
 
 export const OpenContent: FC<IOpenContentProps> = ({
@@ -66,11 +80,8 @@ export const OpenContent: FC<IOpenContentProps> = ({
   close,
 }) => {
   const [content, setContent] = useState<TContent | null>(contentSource);
-  const [closeHover, setCloseHover] = useState(false);
 
-  const closeSpring = useSpring({
-    scale: closeHover ? 1.3 : 1,
-  });
+  const { loading, seasons } = useLoadContentInfo(content);
 
   const modalSpring = useSpring({
     from: {
@@ -104,13 +115,14 @@ export const OpenContent: FC<IOpenContentProps> = ({
   }, [content, contentSource]);
 
   if (content) {
-    const parts = content?.name?.split(" ") || [];
+    const parts = content.name.split(" ") || [];
     const year = last(parts);
-    const title = takeWhile(p => p !== year, parts).join(" ");
+    const title = takeWhile((p) => p !== year, parts).join(" ");
+    const isSeries = content.type === "series";
     return (
       <Modal onClick={close} style={modalSpring}>
         <StyledOpenContent
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           style={cardSpring}
         >
           <Image
@@ -121,19 +133,32 @@ export const OpenContent: FC<IOpenContentProps> = ({
           <InfoBox>
             <Title>{title}</Title>
             <Year>{(year || "").replace(/[{()}]/g, "")}</Year>
-            <CloseButton
-              style={closeSpring}
-              onClick={() => {
-                close();
-                setCloseHover(false);
-              }}
-              onMouseEnter={() => setCloseHover(true)}
-              onMouseLeave={() => setCloseHover(false)}
-              width={12}
-              height={12}
-              src={cross_button}
-              alt="close"
-            />
+            <CloseButton>
+              <img
+                onClick={close}
+                width={12}
+                height={12}
+                src={cross_button}
+                alt="close"
+              />
+            </CloseButton>
+            {isSeries ? (
+              !loading && (
+                <div>
+                  {Object.keys(seasons || {}).map((s, i) => (
+                    <div>{`Season ${i + 1}`}</div>
+                  ))}
+                </div>
+              )
+            ) : (
+              <PlayButton
+                onClick={() => play(`${content.type}/${content.name}`)}
+              >
+                <Hoverable>
+                  <img width={16} height={16} src={play_button} alt="play" />
+                </Hoverable>
+              </PlayButton>
+            )}
           </InfoBox>
         </StyledOpenContent>
       </Modal>
