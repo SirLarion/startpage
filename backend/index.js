@@ -82,6 +82,33 @@ app.get("/run/:cmd", (req, res) => {
   exec(cmd);
 });
 
+app.get("/content/:contentType/:name/info", (req, res) => {
+  const content = req.params.contentType;
+  const contentPath = `${THEATER_PATH}/${content}/${req.params.name}`;
+  const jsonObj = {};
+  if (content === "series") {
+    fs.readdir(contentPath, (err, files) => {
+      if (!err) {
+        const seasons = [];
+        files.forEach(f => {
+          if (fs.lstatSync(`${contentPath}/${f}`).isDirectory()) {
+            let eps = [];
+            fs.readdir(`${contentPath}/${f}`, (err, files) => {
+              if (!err) {
+                eps = files.filter(f => f !== "subtitles");
+              }
+            });
+            seasons.push(eps);
+          }
+        });
+        jsonObj["seasons"] = seasons;
+      }
+    });
+  }
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(jsonObj));
+});
+
 app.get("/content/:contentType/:name", (req, res) => {
   const content = req.params.contentType;
   const contentPath = `${THEATER_PATH}/${content}/${req.params.name}`;

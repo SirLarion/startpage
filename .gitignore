@@ -1,5 +1,7 @@
 build/
 
+scripts/download.sh
+
 # Logs
 logs
 *.log
