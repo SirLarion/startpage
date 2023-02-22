@@ -17,10 +17,10 @@ const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
-const getVideoFileOpener = (videoDir) => (err, files) => {
+const getVideoFileOpener = videoDir => (err, files) => {
   if (!err) {
     const fileName = files.find(
-      (file) => file.endsWith(".mkv") || file.endsWith(".mp4")
+      file => file.endsWith(".mkv") || file.endsWith(".mp4")
     );
     if (fileName !== undefined) {
       console.log(`Attempting to play file: ${videoDir}/${fileName}`);
@@ -44,14 +44,14 @@ app.post("/applications", (req, res) => {
 });
 
 app.get("/run/pirate-init", (req, res) => {
-  fs.readdir(THEATER_PATH, async (err) => {
+  fs.readdir(THEATER_PATH, async err => {
     if (err) {
       if (DISK_UUID !== undefined) {
         let cmdDone = false;
         exec(
           `cat ${process.cwd()}/.env.pwd | sudo -S mount -t ntfs UUID=${DISK_UUID} /mnt/hdd > /dev/null 2>&1`,
           () => {
-            fs.readdir(THEATER_PATH, (err) => {
+            fs.readdir(THEATER_PATH, err => {
               if (!err) {
                 res.status(200);
               } else {
@@ -63,7 +63,7 @@ app.get("/run/pirate-init", (req, res) => {
           }
         );
         while (!cmdDone) {
-          await new Promise((r) => setTimeout(r, 1));
+          await new Promise(r => setTimeout(r, 1));
         }
       } else {
         res.write("Accessing content storage failed.");
@@ -89,10 +89,10 @@ app.get("/content/:contentType/:name/info", async (req, res) => {
   if (content === "series") {
     const files = fs.readdirSync(contentPath);
     const seasons = {};
-    files.forEach((f) => {
+    files.forEach(f => {
       if (fs.lstatSync(`${contentPath}/${f}`).isDirectory()) {
         const seasonFiles = fs.readdirSync(`${contentPath}/${f}`);
-        seasons[f] = seasonFiles.filter((f) => f !== "subtitles");
+        seasons[f] = seasonFiles.filter(f => f !== "subtitles");
       }
     });
     jsonObj["seasons"] = seasons;
@@ -107,7 +107,7 @@ app.get("/content/:contentType/:name", (req, res) => {
   if (VALID_CONTENT_TYPES.includes(content)) {
     fs.readdir(contentPath, (err, files) => {
       if (!err) {
-        const image = files.find((f) => f === THUMBNAIL_FILE_NAME);
+        const image = files.find(f => f === THUMBNAIL_FILE_NAME);
         if (image !== undefined) {
           res.sendFile(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
         }
@@ -133,9 +133,10 @@ app.get("/play/movies/:name", (req, res) => {
   fs.readdir(moviePath, getVideoFileOpener(moviePath));
 });
 
-app.get("/play/series/:season/:episode", (req, res) => {
-  const episodePath = `${THEATER_PATH}/series/${req.params.season}/${req.params.episode}`;
-  fs.readdir(episodePath, getVideoFileOpener(episodePath));
+app.get("/play/series/:name/:season/:episode", (req, res) => {
+  const { name, season, episode } = req.params;
+  const episodePath = `${THEATER_PATH}/series/${name}/${season}/${episode}`;
+  execFile("vlc", [episodePath]);
 });
 
 app.get(["/", "/*"], (req, res) => {

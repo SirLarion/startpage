@@ -53,7 +53,7 @@ const PlayButton = styled.div`
   border-radius: 2rem;
   margin-top: 1rem;
   max-width: max-content;
-  background-color: ${(p) => p.theme.accent.red};
+  background-color: ${p => p.theme.accent.red};
   cursor: pointer;
 
   > :first-child {
@@ -83,8 +83,8 @@ const StyledOpenContent = styled(animated.div)`
   display: flex;
   position: relative;
   border-radius: 0.5rem;
-  background-color: ${(p) => p.theme.background.secondary};
-  box-shadow: 0 0 5rem ${(p) => p.theme.background.primary};
+  background-color: ${p => p.theme.background.secondary};
+  box-shadow: 0 0 5rem ${p => p.theme.background.primary};
 `;
 
 export const OpenContent: FC<IOpenContentProps> = ({
@@ -131,12 +131,12 @@ export const OpenContent: FC<IOpenContentProps> = ({
   if (content) {
     const parts = content.name.split(" ") || [];
     const year = last(parts);
-    const title = takeWhile((p) => p !== year, parts).join(" ");
+    const title = takeWhile(p => p !== year, parts).join(" ");
     const isSeries = content.type === "series";
     return (
       <Modal onClick={close} style={modalSpring}>
         <StyledOpenContent
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
           style={cardSpring}
         >
           <Image
@@ -161,14 +161,13 @@ export const OpenContent: FC<IOpenContentProps> = ({
             {isSeries ? (
               !loading && (
                 <SeasonDisplay
+                  name={content.name}
                   seasons={seasons || {}}
                   availableHeight={IMAGE_HEIGHT_PX - height}
                 />
               )
             ) : (
-              <PlayButton
-                onClick={() => play(`${content.type}/${content.name}`)}
-              >
+              <PlayButton onClick={() => play(`movies/${content.name}`)}>
                 <Hoverable>
                   <img width={16} height={16} src={play_button} alt="play" />
                 </Hoverable>

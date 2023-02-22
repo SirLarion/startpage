@@ -13,6 +13,7 @@ import { Episode } from "../Episode";
 import arrow_button from "../../../../assets/arrow_button.svg";
 
 export interface ISeasonDisplayProps {
+  name: string;
   seasons: TSeriesSeasons;
   availableHeight: number;
 }
@@ -46,13 +47,13 @@ const StyledSeasonDisplay = styled.div`
   flex-direction: column;
   flex: 1;
   padding: 0.75rem;
-  background-color: ${(p) => p.theme.background.tertiary};
+  background-color: ${p => p.theme.background.tertiary};
 `;
 
 const Body = styled.div<{ $availableHeight: number }>`
   padding: 0 1.25rem;
   flex: 1;
-  max-height: calc(${(p) => p.$availableHeight}px - 6rem);
+  max-height: calc(${p => p.$availableHeight}px - 6rem);
   overflow: scroll;
   > :not(:last-child) {
     margin-bottom: 0.75rem;
@@ -60,6 +61,7 @@ const Body = styled.div<{ $availableHeight: number }>`
 `;
 
 export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
+  name,
   seasons,
   availableHeight,
   ...restProps
@@ -110,7 +112,7 @@ export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
               <Episode
                 key={ep}
                 index={i}
-                play={() => play(`series/${activeSeason}/${ep}`)}
+                play={() => play(`series/${name}/${activeSeason}/${ep}`)}
               />
             );
           })}
