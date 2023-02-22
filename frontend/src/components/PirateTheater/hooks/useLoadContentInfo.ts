@@ -2,8 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { TContent } from "..";
 
+export type TSeriesSeasons = Record<`s${number}`, string[]>;
+
 type TContentInfo = {
-  seasons?: Record<`s${number}`, string[]>;
+  seasons?: TSeriesSeasons;
 };
 
 export const useLoadContentInfo = (content: TContent | null) => {
@@ -20,7 +22,7 @@ export const useLoadContentInfo = (content: TContent | null) => {
         .get(
           `http://localhost:12345/content/${content.type}/${content.name}/info`
         )
-        .then((res) => {
+        .then(res => {
           setInfo(res.data || {});
           console.log(res);
           setLoading(false);

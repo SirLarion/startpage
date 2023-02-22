@@ -3,12 +3,14 @@ import { last, takeWhile } from "ramda";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
-import { TContent } from "..";
 import { Heading3, Heading4 } from "../../../styles/typography";
+import { Hoverable } from "../../Hoverable";
+import { TContent } from "..";
+import { useLoadContentInfo } from "../hooks/useLoadContentInfo";
+import { SeasonDisplay } from "./SeasonDisplay";
+
 import cross_button from "../../../assets/cross_button.svg";
 import play_button from "../../../assets/play_button.svg";
-import { Hoverable } from "../../Hoverable";
-import { useLoadContentInfo } from "../hooks/useLoadContentInfo";
 
 export interface IOpenContentProps {
   content: TContent | null;
@@ -46,7 +48,8 @@ const PlayButton = styled.div`
   border-radius: 2rem;
   margin-top: 1rem;
   max-width: max-content;
-  background-color: ${(p) => p.theme.accent.red};
+  background-color: ${p => p.theme.accent.red};
+  cursor: pointer;
 
   > :first-child {
     padding: 0.75rem;
@@ -54,6 +57,7 @@ const PlayButton = styled.div`
 `;
 
 const InfoBox = styled.section`
+  width: 100%;
   padding: 2rem;
 `;
 
@@ -70,8 +74,8 @@ const StyledOpenContent = styled(animated.div)`
   display: flex;
   position: relative;
   border-radius: 0.5rem;
-  background-color: ${(p) => p.theme.background.secondary};
-  box-shadow: 0 0 5rem ${(p) => p.theme.background.primary};
+  background-color: ${p => p.theme.background.secondary};
+  box-shadow: 0 0 5rem ${p => p.theme.background.primary};
 `;
 
 export const OpenContent: FC<IOpenContentProps> = ({
@@ -117,12 +121,12 @@ export const OpenContent: FC<IOpenContentProps> = ({
   if (content) {
     const parts = content.name.split(" ") || [];
     const year = last(parts);
-    const title = takeWhile((p) => p !== year, parts).join(" ");
+    const title = takeWhile(p => p !== year, parts).join(" ");
     const isSeries = content.type === "series";
     return (
       <Modal onClick={close} style={modalSpring}>
         <StyledOpenContent
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
           style={cardSpring}
         >
           <Image
@@ -143,13 +147,7 @@ export const OpenContent: FC<IOpenContentProps> = ({
               />
             </CloseButton>
             {isSeries ? (
-              !loading && (
-                <div>
-                  {Object.keys(seasons || {}).map((s, i) => (
-                    <div>{`Season ${i + 1}`}</div>
-                  ))}
-                </div>
-              )
+              !loading && <SeasonDisplay seasons={seasons || {}} />
             ) : (
               <PlayButton
                 onClick={() => play(`${content.type}/${content.name}`)}

@@ -1,11 +1,10 @@
 import React, { FC, ReactNode } from "react";
 import styled from "styled-components";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
 
-import { useHandleReel } from "../hooks/useHandleReel";
 import { RotateButton } from "../RotateButton";
 import { hideScrollbar } from "../../../styles/common";
+import { Carousel } from "../Carousel";
+import { useCarouselControls } from "../Carousel/useCarouselControls";
 
 export const VISIBLE_CONTENT_MAX = 7;
 
@@ -40,21 +39,18 @@ const BasicReel = styled.div`
 `;
 
 export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
-  const { ref, rotate } = useHandleReel();
+  const { ref, prev, next } = useCarouselControls();
   const showCarousel = items.length > VISIBLE_CONTENT_MAX;
   return (
     <StyledContentReel>
       {!loading &&
         (showCarousel ? (
           <>
-            <RotateLeft rotate={() => rotate("left")} />
-            <RotateRight rotate={() => rotate("right")} />
-            <AliceCarousel
+            <RotateLeft rotate={prev} />
+            <RotateRight rotate={next} />
+            <Carousel
               ref={ref}
-              keyboardNavigation
-              disableDotsControls
-              disableButtonsControls
-              infinite
+              animationDuration={300}
               paddingLeft={80}
               paddingRight={80}
               responsive={{

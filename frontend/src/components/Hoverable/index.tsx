@@ -19,7 +19,7 @@ export const Hoverable: FC<{ scaleFactor?: number }> = ({
           setHover(false);
         }, 50)
       }
-      onMouseEnter={() => setHover(true)}
+      onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={spring}
       {...restProps}
