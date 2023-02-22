@@ -3,6 +3,8 @@ import AliceCarousel from "react-alice-carousel";
 
 import "react-alice-carousel/lib/alice-carousel.css";
 
+export const ANIMATION_DURATION = 300;
+
 type CarouselProps = React.ComponentProps<typeof AliceCarousel>;
 
 export const Carousel = forwardRef<AliceCarousel, CarouselProps>(
@@ -10,6 +12,7 @@ export const Carousel = forwardRef<AliceCarousel, CarouselProps>(
     <AliceCarousel
       ref={ref}
       infinite={infinite}
+      animationDuration={300}
       disableDotsControls
       disableButtonsControls
       preservePosition

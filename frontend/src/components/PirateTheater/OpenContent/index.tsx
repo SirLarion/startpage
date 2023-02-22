@@ -1,9 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { last, takeWhile } from "ramda";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
+import useMeasure from "react-use-measure";
 
 import { Heading3, Heading4 } from "../../../styles/typography";
+import { PlayContext } from "../../../providers/PlayProvider";
 import { Hoverable } from "../../Hoverable";
 import { TContent } from "..";
 import { useLoadContentInfo } from "../hooks/useLoadContentInfo";
@@ -12,9 +14,10 @@ import { SeasonDisplay } from "./SeasonDisplay";
 import cross_button from "../../../assets/cross_button.svg";
 import play_button from "../../../assets/play_button.svg";
 
+const IMAGE_HEIGHT_PX = 568;
+
 export interface IOpenContentProps {
   content: TContent | null;
-  play: (path: string) => void;
   close: () => void;
 }
 
@@ -33,6 +36,8 @@ const Modal = styled(animated.div)`
 
 const Image = styled.img`
   border-radius: 0.5rem;
+  min-height: 35.5rem;
+  max-height: 35.5rem;
   box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);
 `;
 
@@ -48,7 +53,7 @@ const PlayButton = styled.div`
   border-radius: 2rem;
   margin-top: 1rem;
   max-width: max-content;
-  background-color: ${p => p.theme.accent.red};
+  background-color: ${(p) => p.theme.accent.red};
   cursor: pointer;
 
   > :first-child {
@@ -58,33 +63,38 @@ const PlayButton = styled.div`
 
 const InfoBox = styled.section`
   width: 100%;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Title = styled(Heading3)`
-  max-width: 25rem;
-`;
-
-const Year = styled(Heading4)`
-  opacity: 0.7;
+const Title = styled.header`
+  padding: 1.5rem 2rem;
+  > :first-child {
+    max-width: 25rem;
+  }
+  > :last-child {
+    opacity: 0.7;
+  }
 `;
 
 const StyledOpenContent = styled(animated.div)`
   min-width: 50rem;
+  max-height: min-content;
   display: flex;
   position: relative;
   border-radius: 0.5rem;
-  background-color: ${p => p.theme.background.secondary};
-  box-shadow: 0 0 5rem ${p => p.theme.background.primary};
+  background-color: ${(p) => p.theme.background.secondary};
+  box-shadow: 0 0 5rem ${(p) => p.theme.background.primary};
 `;
 
 export const OpenContent: FC<IOpenContentProps> = ({
   content: contentSource,
-  play,
   close,
 }) => {
+  const { play } = useContext(PlayContext);
   const [content, setContent] = useState<TContent | null>(contentSource);
 
+  const [titleRef, { height }] = useMeasure();
   const { loading, seasons } = useLoadContentInfo(content);
 
   const modalSpring = useSpring({
@@ -121,12 +131,12 @@ export const OpenContent: FC<IOpenContentProps> = ({
   if (content) {
     const parts = content.name.split(" ") || [];
     const year = last(parts);
-    const title = takeWhile(p => p !== year, parts).join(" ");
+    const title = takeWhile((p) => p !== year, parts).join(" ");
     const isSeries = content.type === "series";
     return (
       <Modal onClick={close} style={modalSpring}>
         <StyledOpenContent
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           style={cardSpring}
         >
           <Image
@@ -135,8 +145,10 @@ export const OpenContent: FC<IOpenContentProps> = ({
             alt={`${content.name} large`}
           />
           <InfoBox>
-            <Title>{title}</Title>
-            <Year>{(year || "").replace(/[{()}]/g, "")}</Year>
+            <Title ref={titleRef}>
+              <Heading3>{title}</Heading3>
+              <Heading4>{(year || "").replace(/[{()}]/g, "")}</Heading4>
+            </Title>
             <CloseButton>
               <img
                 onClick={close}
@@ -147,7 +159,12 @@ export const OpenContent: FC<IOpenContentProps> = ({
               />
             </CloseButton>
             {isSeries ? (
-              !loading && <SeasonDisplay seasons={seasons || {}} />
+              !loading && (
+                <SeasonDisplay
+                  seasons={seasons || {}}
+                  availableHeight={IMAGE_HEIGHT_PX - height}
+                />
+              )
             ) : (
               <PlayButton
                 onClick={() => play(`${content.type}/${content.name}`)}

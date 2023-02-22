@@ -39,7 +39,7 @@ const BasicReel = styled.div`
 `;
 
 export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
-  const { ref, prev, next } = useCarouselControls();
+  const { ref, prev, next, active } = useCarouselControls(items.length);
   const showCarousel = items.length > VISIBLE_CONTENT_MAX;
   return (
     <StyledContentReel>
@@ -50,7 +50,7 @@ export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
             <RotateRight rotate={next} />
             <Carousel
               ref={ref}
-              animationDuration={300}
+              activeIndex={active}
               paddingLeft={80}
               paddingRight={80}
               responsive={{

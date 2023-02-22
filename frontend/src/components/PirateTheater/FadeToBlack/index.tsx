@@ -7,11 +7,11 @@ export interface IFadeToBlackProps {
 }
 
 const StyledFadeToBlack = styled(animated.div)`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 200vw;
-  height: 200vh;
+  width: 100vw;
+  height: 100vh;
   z-index: 100;
   background-color: black;
 `;

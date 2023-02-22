@@ -1,16 +1,17 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import styled from "styled-components";
 import { animated, config, useSpring } from "react-spring";
 
 import { Heading1, Heading2 } from "../../styles/typography";
+import { PlayContext } from "../../providers/PlayProvider";
 import { ContentPiece } from "./ContentPiece";
 import { FadeToBlack } from "./FadeToBlack";
 import { useLoadContent } from "./hooks/useLoadContent";
-import { usePlayContent } from "./hooks/usePlayContent";
 
-import piratePlain from "../../assets/pirate_plain.svg";
 import { ContentReel, VISIBLE_CONTENT_MAX } from "./ContentReel";
 import { OpenContent } from "./OpenContent";
+
+import piratePlain from "../../assets/pirate_plain.svg";
 
 const PIRATE_LOGO_SIZE = 64;
 
@@ -54,7 +55,7 @@ export type TContent = {
 export const PirateTheater: FC = () => {
   const [openedContent, setOpenedContent] = useState<TContent | null>(null);
   const { movieList, seriesList, loading } = useLoadContent();
-  const { playContent, playing } = usePlayContent();
+  const { playing } = useContext(PlayContext);
 
   const spring = useSpring({
     from: {
@@ -125,7 +126,6 @@ export const PirateTheater: FC = () => {
       </StyledPirateTheater>
       <OpenContent
         content={openedContent}
-        play={playContent}
         close={() => setOpenedContent(null)}
       />
       <FadeToBlack visible={playing} />

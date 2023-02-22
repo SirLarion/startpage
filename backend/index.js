@@ -133,6 +133,11 @@ app.get("/play/movies/:name", (req, res) => {
   fs.readdir(moviePath, getVideoFileOpener(moviePath));
 });
 
+app.get("/play/series/:season/:episode", (req, res) => {
+  const episodePath = `${THEATER_PATH}/series/${req.params.season}/${req.params.episode}`;
+  fs.readdir(episodePath, getVideoFileOpener(episodePath));
+});
+
 app.get(["/", "/*"], (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });

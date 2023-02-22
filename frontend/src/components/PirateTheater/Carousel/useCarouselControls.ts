@@ -1,22 +1,29 @@
 import { useState, useRef } from "react";
 import AliceCarousel from "react-alice-carousel";
 
+import { ANIMATION_DURATION } from ".";
+
 const mod = (n: number, m: number) => {
   return ((n % m) + m) % m;
 };
 
-export const useCarouselControls = (items = 1) => {
+export const useCarouselControls = (items: number) => {
   const [active, setActive] = useState(0);
+  const [sliding, setSliding] = useState(false);
   const ref = useRef<AliceCarousel | null>(null);
 
   const control = (dir: "left" | "right") => {
     if (ref && ref.current) {
       if (dir === "left") {
         ref.current.slidePrev();
-        setActive(i => mod(i - 1, items));
+        setTimeout(() => {
+          setActive((i) => mod(i - 1, items));
+        }, ANIMATION_DURATION);
       } else {
         ref.current.slideNext();
-        setActive(i => mod(i + 1, items));
+        setTimeout(() => {
+          setActive((i) => mod(i + 1, items));
+        }, ANIMATION_DURATION);
       }
     }
   };
@@ -25,5 +32,6 @@ export const useCarouselControls = (items = 1) => {
     prev: () => control("left"),
     next: () => control("right"),
     active,
+    sliding,
   };
 };

@@ -17,8 +17,10 @@ const dark: TTheme = {
   background: {
     primary: "#000000",
     secondary: "#0d131c",
+    tertiary: "#080c11",
   },
   accent: {
+    navy: "#152030",
     red: "#c00",
   },
 };

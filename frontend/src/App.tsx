@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { LinkContainer } from "./components/LinkContainer";
 import { AppsProvider } from "./providers/AppsProvider";
+import { PlayProvider } from "./providers/PlayProvider";
 import { AppSelectContainer } from "./components/AppSelectContainer";
 import { PirateTheater } from "./components/PirateTheater";
 import { hideScrollbar } from "./styles/common";
@@ -14,7 +15,7 @@ const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${p => p.theme.background.primary};
+  background-color: ${(p) => p.theme.background.primary};
   overflow-x: hidden;
   ${hideScrollbar}
 `;
@@ -23,11 +24,13 @@ const App = () => {
   return (
     <StyledApp>
       <AppsProvider>
-        <Routes>
-          <Route path="/" element={<LinkContainer />} />
-          <Route path="/select" element={<AppSelectContainer />} />
-          <Route path="/pirate-theater" element={<PirateTheater />} />
-        </Routes>
+        <PlayProvider>
+          <Routes>
+            <Route path="/" element={<LinkContainer />} />
+            <Route path="/select" element={<AppSelectContainer />} />
+            <Route path="/pirate-theater" element={<PirateTheater />} />
+          </Routes>
+        </PlayProvider>
       </AppsProvider>
     </StyledApp>
   );
