@@ -17,12 +17,12 @@ const StyledEpisode = styled(animated.div)`
   min-width: 100%;
   padding: 1.25rem 1rem;
   border-radius: 0.5rem;
-  background-color: ${(p) => p.theme.background.secondary};
-  transition: background-color 200ms ease-in-out;
+  background-color: ${p => p.theme.background.secondary};
+  transition: background-color 400ms ease-in-out;
   cursor: pointer;
 
   :hover {
-    background-color: ${(p) => p.theme.accent.navy};
+    background-color: ${p => p.theme.accent.red};
   }
 `;
 

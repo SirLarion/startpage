@@ -50,11 +50,17 @@ const CloseButton = styled(Hoverable)`
 `;
 
 const PlayButton = styled.div`
-  border-radius: 2rem;
-  margin-top: 1rem;
+  border-radius: 1rem;
+  margin: 2rem;
+  padding: 0 0.5rem;
   max-width: max-content;
-  background-color: ${p => p.theme.accent.red};
+  background-color: ${p => p.theme.background.secondary};
+  transition: background-color 400ms ease-in-out;
   cursor: pointer;
+
+  :hover {
+    background-color: ${p => p.theme.accent.red};
+  }
 
   > :first-child {
     padding: 0.75rem;
@@ -65,6 +71,11 @@ const InfoBox = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const InfoBody = styled.div`
+  flex: 1;
+  background-color: ${p => p.theme.background.tertiary};
 `;
 
 const Title = styled.header`
@@ -158,21 +169,23 @@ export const OpenContent: FC<IOpenContentProps> = ({
                 alt="close"
               />
             </CloseButton>
-            {isSeries ? (
-              !loading && (
-                <SeasonDisplay
-                  name={content.name}
-                  seasons={seasons || {}}
-                  availableHeight={IMAGE_HEIGHT_PX - height}
-                />
-              )
-            ) : (
-              <PlayButton onClick={() => play(`movies/${content.name}`)}>
-                <Hoverable>
-                  <img width={16} height={16} src={play_button} alt="play" />
-                </Hoverable>
-              </PlayButton>
-            )}
+            <InfoBody>
+              {isSeries ? (
+                !loading && (
+                  <SeasonDisplay
+                    name={content.name}
+                    seasons={seasons || {}}
+                    availableHeight={IMAGE_HEIGHT_PX - height}
+                  />
+                )
+              ) : (
+                <PlayButton onClick={() => play(`movies/${content.name}`)}>
+                  <Hoverable>
+                    <img width={16} height={16} src={play_button} alt="play" />
+                  </Hoverable>
+                </PlayButton>
+              )}
+            </InfoBody>
           </InfoBox>
         </StyledOpenContent>
       </Modal>

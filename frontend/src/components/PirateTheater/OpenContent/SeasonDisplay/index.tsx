@@ -45,7 +45,6 @@ const StyledSeasonDisplay = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1;
   padding: 0.75rem;
   background-color: ${p => p.theme.background.tertiary};
 `;
