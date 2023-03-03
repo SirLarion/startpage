@@ -15,12 +15,12 @@ const dark: TTheme = {
     primary: "#DDDDDF",
   },
   background: {
-    primary: "#000000",
+    primary: "#050e19",
     secondary: "#0d131c",
     tertiary: "#080c11",
   },
   accent: {
-    navy: "#152030",
+    navy: "#101654",
     red: "#c00",
   },
 };

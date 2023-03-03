@@ -1,16 +1,16 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
 
-import { Text } from "../../../../styles/typography";
-import { PlayContext } from "../../../../providers/PlayProvider";
-import { TSeriesSeasons } from "../../hooks/useLoadContentInfo";
+import { Text } from "../../../../../styles/typography";
+import { PlayContext } from "../../../../../providers/PlayProvider";
+import { TSeriesSeasons } from "../../../hooks/useLoadContentInfo";
 
 import { Carousel } from "../../Carousel";
-import { Hoverable } from "../../../Hoverable";
+import { Hoverable } from "../../../../Hoverable";
 import { useCarouselControls } from "../../Carousel/useCarouselControls";
 import { Episode } from "../Episode";
 
-import arrow_button from "../../../../assets/arrow_button.svg";
+import arrow_button from "../../../../../assets/arrow_button.svg";
 
 export interface ISeasonDisplayProps {
   name: string;

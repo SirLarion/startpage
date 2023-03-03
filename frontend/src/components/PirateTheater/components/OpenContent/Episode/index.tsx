@@ -2,9 +2,9 @@ import React, { FC, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import styled from "styled-components";
 
-import { Heading4 as BaseHeading } from "../../../../styles/typography";
+import { Heading4 as BaseHeading } from "../../../../../styles/typography";
 
-import play_button from "../../../../assets/play_button.svg";
+import play_button from "../../../../../assets/play_button.svg";
 
 export interface IEpisodeProps {
   index: number;
@@ -15,7 +15,7 @@ const StyledEpisode = styled(animated.div)`
   display: flex;
   justify-content: space-between;
   min-width: 100%;
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1.5rem 1.25rem 1.5rem;
   border-radius: 0.5rem;
   background-color: ${p => p.theme.background.secondary};
   transition: background-color 400ms ease-in-out;
@@ -36,17 +36,13 @@ export const Episode: FC<IEpisodeProps> = ({ index, play }) => {
     delay: index * 70,
   });
 
-  const springTranslate = {
+  const textSpring = useSpring({
     transform: hover ? "translate3d(1rem, 0, 0)" : "translate3d(0rem, 0, 0)",
-  };
-
-  const textSpring = useSpring(springTranslate);
+  });
 
   const playSpring = useSpring({
     opacity: hover ? 1 : 0,
-    transform: hover
-      ? "translate3d(-0.5rem, 0, 0)"
-      : "translate3d(-1.5rem, 0, 0)",
+    transform: hover ? "scale3d(1.1, 1.1, 1)" : "scale3d(0.5, 0.5, 1)",
   });
 
   return (

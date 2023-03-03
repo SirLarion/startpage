@@ -2,9 +2,8 @@ import React, { FC, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import styled from "styled-components";
 
-import arrow_button from "../../../assets/arrow_button.svg";
-import { noSelect } from "../../../styles/common";
-import { theme } from "../../../styles/theme";
+import arrow_button from "../../../../assets/arrow_button.svg";
+import { noSelect } from "../../../../styles/common";
 
 export interface IRotateButtonProps {
   rotate: () => void;
@@ -20,9 +19,9 @@ const StyledButtonBase = styled(animated.div)`
 const Blur = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${theme.dark.background.primary};
-  filter: blur(2rem);
-  transform: scale3d(1.5, 1.2, 1.5) translate3d(6rem, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+  filter: blur(3rem);
+  transform: scale3d(1.1, 1.1, 1) translate3d(6rem, 2rem, 0);
 `;
 
 const StyledButton = styled.div`
@@ -34,7 +33,7 @@ const StyledButton = styled.div`
   z-index: 11;
   right: 0;
   top: 0;
-  height: 23rem;
+  min-height: 100%;
   width: 8rem;
   ${noSelect}
 `;

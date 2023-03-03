@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from "react";
 import styled from "styled-components";
 
-import { RotateButton } from "../RotateButton";
-import { hideScrollbar } from "../../../styles/common";
-import { Carousel } from "../Carousel";
-import { useCarouselControls } from "../Carousel/useCarouselControls";
+import { RotateButton } from "../../components/RotateButton";
+import { hideScrollbar } from "../../../../styles/common";
+import { Carousel } from "../../components/Carousel";
+import { useCarouselControls } from "../../components/Carousel/useCarouselControls";
 
-export const VISIBLE_CONTENT_MAX = 7;
+export const VISIBLE_CONTENT_MAX = 5;
 
 export interface IContentReelProps {
   items: ReactNode[];
@@ -23,12 +23,13 @@ const RotateLeft = styled(RotateButton)`
 
 const StyledContentReel = styled.div`
   max-width: 100vw;
-  min-height: 23rem;
+  min-height: 26rem;
+  flex: 1;
   ${hideScrollbar}
 
   .alice-carousel__stage {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 `;
 
@@ -51,8 +52,8 @@ export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
             <Carousel
               ref={ref}
               activeIndex={active}
-              paddingLeft={80}
-              paddingRight={80}
+              paddingLeft={160}
+              paddingRight={130}
               responsive={{
                 0: {
                   items: VISIBLE_CONTENT_MAX,

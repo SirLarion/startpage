@@ -9,8 +9,8 @@ export const Hoverable: FC<{ scaleFactor?: number }> = ({
   const [hover, setHover] = useState(false);
   const spring = useSpring({
     transform: hover
-      ? `scale3d(${scaleFactor}, ${scaleFactor}, 1)`
-      : `scale3d(1, 1, 1)`,
+      ? `scale3d(${scaleFactor}, ${scaleFactor}, 1) rotate3d(0, 0, 1, 0.05deg)`
+      : `scale3d(1, 1, 1) rotate3d(0, 0, 1, 0.05deg)`,
   });
   return (
     <animated.div

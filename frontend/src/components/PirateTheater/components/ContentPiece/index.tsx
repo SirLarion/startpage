@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
-import { TContent } from "..";
+import { TContent } from "../..";
 import { VISIBLE_CONTENT_MAX } from "../ContentReel";
 
 export interface IContentPieceProps {
@@ -12,8 +12,8 @@ export interface IContentPieceProps {
 }
 
 const StyledContentPiece = styled(animated.div)`
-  min-width: 14rem;
-  max-width: 14rem;
+  min-width: 18rem;
+  max-width: 18rem;
   cursor: pointer;
 `;
 
@@ -59,7 +59,7 @@ export const ContentPiece: FC<IContentPieceProps> = ({
     >
       <StyledImage
         style={hoverSpring}
-        width={224}
+        width={288}
         src={`http://localhost:12345/content/${content.type}/${content.name}`}
         alt={content.name}
       />

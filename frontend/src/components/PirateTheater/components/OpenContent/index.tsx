@@ -4,15 +4,15 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import useMeasure from "react-use-measure";
 
-import { Heading3, Heading4 } from "../../../styles/typography";
-import { PlayContext } from "../../../providers/PlayProvider";
-import { Hoverable } from "../../Hoverable";
-import { TContent } from "..";
-import { useLoadContentInfo } from "../hooks/useLoadContentInfo";
+import { Heading3, Heading4 } from "../../../../styles/typography";
+import { PlayContext } from "../../../../providers/PlayProvider";
+import { Hoverable } from "../../../Hoverable";
+import { TContent } from "../..";
+import { useLoadContentInfo } from "../../hooks/useLoadContentInfo";
 import { SeasonDisplay } from "./SeasonDisplay";
 
-import cross_button from "../../../assets/cross_button.svg";
-import play_button from "../../../assets/play_button.svg";
+import cross_button from "../../../../assets/cross_button.svg";
+import play_button from "../../../../assets/play_button.svg";
 
 const IMAGE_HEIGHT_PX = 568;
 
@@ -50,9 +50,9 @@ const CloseButton = styled(Hoverable)`
 `;
 
 const PlayButton = styled.div`
-  border-radius: 1rem;
+  border-radius: 2rem;
   margin: 2rem;
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   max-width: max-content;
   background-color: ${p => p.theme.background.secondary};
   transition: background-color 400ms ease-in-out;
@@ -95,7 +95,7 @@ const StyledOpenContent = styled(animated.div)`
   position: relative;
   border-radius: 0.5rem;
   background-color: ${p => p.theme.background.secondary};
-  box-shadow: 0 0 5rem ${p => p.theme.background.primary};
+  box-shadow: 0 0 5rem #000000;
 `;
 
 export const OpenContent: FC<IOpenContentProps> = ({
