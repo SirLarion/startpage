@@ -18,6 +18,20 @@ const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
+const getMetaData = videoFile =>
+  new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(videoFile, (err, { format }) => {
+      if (err) {
+        reject(err);
+      }
+      const hours = Math.floor(format.duration / 3600);
+      const minutes = (format.duration / 3600 - hours) * 60;
+      resolve({
+        length: `${hours > 0 ? hours + "h " : ""}${Math.floor(minutes)}m`,
+      });
+    });
+  });
+
 const getVideoFileOpener = videoDir => (err, files) => {
   if (!err) {
     const fileName = files.find(
@@ -90,14 +104,37 @@ app.get("/content/:contentType/:name/info", async (req, res) => {
   if (content === "series") {
     const files = fs.readdirSync(contentPath);
     const seasons = {};
-    files.forEach(f => {
-      if (fs.lstatSync(`${contentPath}/${f}`).isDirectory()) {
-        const seasonFiles = fs.readdirSync(`${contentPath}/${f}`);
-        seasons[f] = seasonFiles.filter(f => f !== "subtitles");
-      }
-    });
+    await Promise.all(
+      files.map(
+        async f =>
+          new Promise(async (resolve, _) => {
+            if (fs.lstatSync(`${contentPath}/${f}`).isDirectory()) {
+              const seasonFiles = fs.readdirSync(`${contentPath}/${f}`);
+              const episodes = seasonFiles.filter(f => f !== "subtitles");
+
+              seasons[f] = await Promise.all(
+                episodes.map(async e => ({
+                  file: e,
+                  ...(await getMetaData(`${contentPath}/${f}/${e}`)),
+                }))
+              );
+              resolve();
+            }
+            resolve();
+          })
+      )
+    );
     jsonObj["seasons"] = seasons;
+  } else {
+    const files = fs.readdirSync(contentPath);
+    const movieName = files.find(
+      file => file.endsWith(".mkv") || file.endsWith(".mp4")
+    );
+    jsonObj["length"] = (
+      await getMetaData(`${contentPath}/${movieName}`)
+    ).length;
   }
+
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(jsonObj));
 });

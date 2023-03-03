@@ -2,10 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { TContent } from "..";
 
-export type TSeriesSeasons = Record<`s${number}`, string[]>;
+type TSeriesEpisode = {
+  file: string;
+  length: string;
+};
+
+export type TSeriesSeasons = Record<`s${number}`, TSeriesEpisode[]>;
 
 type TContentInfo = {
   seasons?: TSeriesSeasons;
+  length?: string;
 };
 
 export const useLoadContentInfo = (content: TContent | null) => {
@@ -32,6 +38,6 @@ export const useLoadContentInfo = (content: TContent | null) => {
 
   return {
     loading,
-    seasons: info?.seasons,
+    info,
   };
 };

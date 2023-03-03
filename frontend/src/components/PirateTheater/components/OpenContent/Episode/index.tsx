@@ -8,6 +8,7 @@ import play_button from "../../../../../assets/play_button.svg";
 
 export interface IEpisodeProps {
   index: number;
+  length: string;
   play: () => void;
 }
 
@@ -28,7 +29,13 @@ const StyledEpisode = styled(animated.div)`
 
 const Heading4 = animated(BaseHeading);
 
-export const Episode: FC<IEpisodeProps> = ({ index, play }) => {
+const Length = styled(Heading4)`
+  opacity: 0.4;
+  font-size: 0.75rem;
+  margin-right: 2rem;
+`;
+
+export const Episode: FC<IEpisodeProps> = ({ index, length, play }) => {
   const [hover, setHover] = useState(false);
   const spring = useSpring({
     from: { opacity: 0, transform: "translate3d(0, 1rem, 0)" },
@@ -52,7 +59,10 @@ export const Episode: FC<IEpisodeProps> = ({ index, play }) => {
       onMouseLeave={() => setHover(false)}
       onClick={play}
     >
-      <Heading4 style={textSpring}>{`Episode ${index + 1}`}</Heading4>
+      <Heading4 style={textSpring}>
+        {`Episode ${index + 1}`}
+        <Length>{length}</Length>
+      </Heading4>
       <animated.img
         width={16}
         style={playSpring}

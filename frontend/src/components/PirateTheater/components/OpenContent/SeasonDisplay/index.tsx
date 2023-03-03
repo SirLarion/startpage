@@ -109,9 +109,10 @@ export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
           (seasons[activeSeason] || []).map((ep, i) => {
             return (
               <Episode
-                key={ep}
+                key={ep.file}
                 index={i}
-                play={() => play(`series/${name}/${activeSeason}/${ep}`)}
+                length={ep.length}
+                play={() => play(`series/${name}/${activeSeason}/${ep.file}`)}
               />
             );
           })}

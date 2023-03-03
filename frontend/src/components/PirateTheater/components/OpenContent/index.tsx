@@ -78,7 +78,7 @@ const InfoBody = styled.div`
   background-color: ${p => p.theme.background.tertiary};
 `;
 
-const Title = styled.header`
+const Header = styled.header`
   padding: 1.5rem 2rem;
   > :first-child {
     max-width: 25rem;
@@ -86,6 +86,11 @@ const Title = styled.header`
   > :last-child {
     opacity: 0.7;
   }
+`;
+
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledOpenContent = styled(animated.div)`
@@ -106,7 +111,7 @@ export const OpenContent: FC<IOpenContentProps> = ({
   const [content, setContent] = useState<TContent | null>(contentSource);
 
   const [titleRef, { height }] = useMeasure();
-  const { loading, seasons } = useLoadContentInfo(content);
+  const { loading, info } = useLoadContentInfo(content);
 
   const modalSpring = useSpring({
     from: {
@@ -156,10 +161,13 @@ export const OpenContent: FC<IOpenContentProps> = ({
             alt={`${content.name} large`}
           />
           <InfoBox>
-            <Title ref={titleRef}>
+            <Header ref={titleRef}>
               <Heading3>{title}</Heading3>
-              <Heading4>{(year || "").replace(/[{()}]/g, "")}</Heading4>
-            </Title>
+              <Info>
+                <Heading4>{(year || "").replace(/[{()}]/g, "")}</Heading4>
+                {!isSeries && <Heading4>{info?.length || ""}</Heading4>}
+              </Info>
+            </Header>
             <CloseButton>
               <img
                 onClick={close}
@@ -174,7 +182,7 @@ export const OpenContent: FC<IOpenContentProps> = ({
                 !loading && (
                   <SeasonDisplay
                     name={content.name}
-                    seasons={seasons || {}}
+                    seasons={info?.seasons || {}}
                     availableHeight={IMAGE_HEIGHT_PX - height}
                   />
                 )

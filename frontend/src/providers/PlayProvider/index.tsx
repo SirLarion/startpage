@@ -10,7 +10,6 @@ export const PlayProvider: FC = ({ children }) => {
   const [playing, setPlaying] = useState(false);
 
   const play = (contentPath: string) => {
-    console.log("pleba pluba");
     setPlaying(true);
     setTimeout(() => setPlaying(false), 5000);
     setTimeout(
