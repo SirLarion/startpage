@@ -1,10 +1,9 @@
-const cors = require("cors");
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
-const ffmpeg = require("fluent-ffmpeg");
-const { exec, execFile } = require("child_process");
-require("dotenv").config();
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
+import ffmpeg from 'fluent-ffmpeg';
+import { exec, execFile } from 'child_process'
 
 const VALID_CONTENT_TYPES = ["movies", "series"];
 const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
@@ -18,7 +17,7 @@ const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
 const app = express();
 
-const getMetaData = videoFile =>
+const getMetaData = (videoFile: string) =>
   new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoFile, (err, { format }) => {
       if (err) {
