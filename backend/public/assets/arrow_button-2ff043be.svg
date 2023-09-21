@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24.399mm" height="43.593mm" version="1.1" viewBox="0 0 24.399 43.593" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(-84.052 -108.24)" stroke-linecap="round">
+<path d="m87.635 108.24c-0.95006-7e-5 -1.8612 0.3772-2.5332 1.0488-1.4001 1.3994-1.4001 3.669 0 5.0684l17.23 17.875c1.3994 1.4001 3.669 1.4001 5.0684 0 1.4001-1.3994 1.4001-3.669 0-5.0684l-17.23-17.875c-0.67243-0.67211-1.5844-1.0494-2.5352-1.0488z" color="#000000" fill="#fff" style="paint-order:stroke fill markers"/>
+<path d="m87.636 111.82 17.23 17.23" color="#000000" fill="#a50000" fill-opacity=".21467" stroke-width="7.166" style="paint-order:stroke fill markers"/>
+<path d="m104.87 126.09c-0.95006-6e-5 -1.8612 0.3772-2.5332 1.0488l-17.23 18.578c-1.3988 1.3992-1.3988 3.6672 0 5.0664 1.3994 1.4001 3.669 1.4001 5.0684 0l17.23-18.578c1.3988-1.3992 1.3988-3.6672 0-5.0664-0.67243-0.6721-1.5844-1.0494-2.5352-1.0488z" color="#000000" fill="#fff" style="paint-order:stroke fill markers"/>
+<path d="m104.87 131.02-17.23 17.23" color="#000000" fill="#a50000" fill-opacity=".21467" stroke-width="7.166" style="paint-order:stroke fill markers"/>
+</g>
+</svg>

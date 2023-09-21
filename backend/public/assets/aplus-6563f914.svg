@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="114.95mm" height="114.95mm" version="1.1" viewBox="0 0 407.29 407.29" xmlns="http://www.w3.org/2000/svg" xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlnsXlink="http://www.w3.org/1999/xlink">
+<defs>
+<rect id="b" width="252.03" height="238.7"/>
+</defs>
+<g transform="matrix(1 0 0 1 -2.2895 9.9417)" fill="#005eb8">
+<rect x="2.2896" y="-9.9418" width="407.29" height="407.29" ry="36.843" fill="#005eb8"/>
+</g>
+<g transform="matrix(2.592 0 0 2.592 -127.95 -65.956)" fill="#fff">
+<clipPath id="a">
+<use width="100%" height="100%" xlinkHref="#b"/>
+</clipPath>
+<path d="m114.49 113.43h-17.13l8.56-24.74zm26.5 26.15-24.59-69.45h-20.95l-24.59 69.44h17.45l4.25-12.29h26.72l4.25 12.29h17.46z"/>
+<rect transform="rotate(90)" x="83.849" y="-165.6" width="40.993" height="13.186"/>
+<rect transform="scale(-1)" x="-179.51" y="-110.94" width="40.993" height="13.186"/>
+</g>
+</svg>
