@@ -1,1 +1,4 @@
-{"mode":"production","apps":["github","soundcloud","calendar","vscode","miro","figma"]}
+{
+  "mode": "production",
+  "apps": ["github", "soundcloud", "mycourses", "youtube", "miro", "figma"]
+}

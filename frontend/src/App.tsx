@@ -15,7 +15,7 @@ const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(9deg, rgb(6 3 22) 11%, rgb(50 16 16) 95%);
+  background: ${p => p.theme.background.gradient};
   overflow-x: hidden;
   ${hideScrollbar}
 `;

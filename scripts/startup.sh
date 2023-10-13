@@ -2,10 +2,9 @@
 
 START="/home/sirlarion/repos/startpage"
 
-sleep 0.1
-
-echo "Starting Node server"
+echo "Starting Bun server"
 
 cd $START/backend
-node index.js &
+bun run start &
+sleep 0.1
 firefox --kiosk --new-window http://localhost:12345 &

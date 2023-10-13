@@ -6,7 +6,7 @@ export const PlayContext = createContext({
   play: (_: string) => {},
 });
 
-export const PlayProvider: FC = ({ children }) => {
+export const PlayProvider: FC<{ children: JSX.Element }> = ({ children }) => {
   const [playing, setPlaying] = useState(false);
 
   const play = (contentPath: string) => {

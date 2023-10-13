@@ -14,7 +14,7 @@ export type TAppInfo =
 
 export const AppsContext = createContext<TAppInfo>(undefined);
 
-export const AppsProvider: FC = ({ children }) => {
+export const AppsProvider: FC<{ children: JSX.Element }> = ({ children }) => {
   const [appInfo, setAppInfo] = useState<TAppInfo>(undefined);
 
   useEffect(() => {

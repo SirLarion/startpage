@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, ReactNode, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated, config } from "react-spring";
 import axios from "axios";
@@ -7,14 +7,16 @@ import { useNavigate } from "react-router-dom";
 import { TAppConfig } from "../../types";
 
 const StyledApplicationLink = styled(animated.a)`
+  all: unset;
   position: relative;
+  cursor: pointer;
 
   :focus-visible {
     outline: none;
   }
 `;
 
-const IconWrapper: FC<{ animationDelay: number }> = ({
+const IconWrapper: FC<{ animationDelay: number, children?: ReactNode  }> = ({
   animationDelay,
   children,
 }) => {
@@ -23,11 +25,11 @@ const IconWrapper: FC<{ animationDelay: number }> = ({
     delay: animationDelay,
     from: {
       opacity: 0,
-      transform: "scale(0.8)",
+      transform: "scale(0.8) rotateZ(0.1deg)",
     },
     to: {
       opacity: 1,
-      transform: "scale(1)",
+      transform: "scale(1) rotateZ(0.1deg)",
     },
   });
   return <animated.div style={spring}>{children}</animated.div>;

@@ -1,5 +1,4 @@
-type THexColor = `#${string}`;
-type TTheme = Record<string, Record<string, THexColor>>;
+type TTheme = Record<string, Record<string, string>>;
 
 const light: TTheme = {
   foreground: {
@@ -7,6 +6,7 @@ const light: TTheme = {
   },
   background: {
     primary: "#FFFFF0",
+    gradient: 'linear-gradient(9deg, rgba(231,248,255,1) 11%, rgba(243,255,199,1) 95%)'
   },
 };
 
@@ -18,6 +18,7 @@ const dark: TTheme = {
     primary: "#050e19",
     secondary: "#0d131c",
     tertiary: "#080c11",
+    gradient: 'linear-gradient(9deg, rgb(6 3 22) 11%, rgb(50 16 16) 95%)'
   },
   accent: {
     navy: "#101654",

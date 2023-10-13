@@ -23,15 +23,16 @@ const getMetaData = (videoFile: string) =>
       if (err) {
         reject(err);
       }
-      const hours = Math.floor(format.duration / 3600);
-      const minutes = (format.duration / 3600 - hours) * 60;
+      const dur = format.duration || 0;
+      const hours = Math.floor(dur / 3600);
+      const minutes = (dur / 3600 - hours) * 60;
       resolve({
         length: `${hours > 0 ? hours + "h " : ""}${Math.floor(minutes)}m`,
       });
     });
   });
 
-const getVideoFileOpener = videoDir => (err, files) => {
+const getVideoFileOpener = (videoDir: string) => (err: Error | undefined , files: string[]) => {
   if (!err) {
     const fileName = files.find(
       file => file.endsWith(".mkv") || file.endsWith(".mp4")
@@ -49,15 +50,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "build")));
 
-app.get("/applications", (req, res) => {
+app.get("/applications", (_, res) => {
   res.sendFile(filePath);
 });
 
-app.post("/applications", (req, res) => {
+app.post("/applications", (req, _) => {
   fs.writeFile(filePath, JSON.stringify(req.body), () => {});
 });
 
-app.get("/run/pirate-init", (req, res) => {
+app.get("/run/pirate-init", (_, res) => {
+  if(THEATER_PATH) {
   fs.readdir(THEATER_PATH, async err => {
     if (err) {
       if (DISK_UUID !== undefined) {
@@ -88,9 +90,10 @@ app.get("/run/pirate-init", (req, res) => {
     }
     res.end();
   });
+  }
 });
 
-app.get("/run/:cmd", (req, res) => {
+app.get("/run/:cmd", (req, _) => {
   const cmd = req.params.cmd;
   console.log(`Running command: '${cmd}'`);
   exec(cmd);

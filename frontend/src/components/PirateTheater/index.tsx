@@ -42,7 +42,7 @@ const ContentSection = styled(animated.section)`
 
 const search = (arr: string[], str: string) =>
   arr
-    .filter(v => v.toLowerCase().includes(str.toLowerCase()))
+    .filter((v) => v.toLowerCase().includes(str.toLowerCase()))
     .sort((a, b) => a.indexOf(str) - b.indexOf(str));
 
 export type TContent = {
@@ -80,6 +80,9 @@ export const PirateTheater: FC = () => {
   return (
     <Wrapper>
       <StyledPirateTheater>
+        <ContentSection>
+          <SectionLabel style={spring}>RECENT</SectionLabel>
+        </ContentSection>
         <ContentSection>
           <SectionLabel style={spring}>MOVIES</SectionLabel>
           <ContentReel
