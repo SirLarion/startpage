@@ -1,9 +1,27 @@
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import fs from 'fs';
-import ffmpeg from 'fluent-ffmpeg';
-import { exec, execFile } from 'child_process'
+import { Elysia } from "elysia";
+import { Database } from 'bun:sqlite';
+import { staticPlugin } from "@elysiajs/static";
+import cors from "@elysiajs/cors";
+import path from "node:path";
+import fs from "node:fs";
+import { getIsTheaterInit, toUtfSpaces } from "./lib";
+import { groupBy } from "ramda";
+
+type QueryRes = Record<string, unknown> | undefined;
+
+type TEpisode = {
+  id: string;
+  season: number;
+  file: string;
+  length: string;
+}
+
+type TMovie = {
+  id: string;
+  name: string;
+  file: string;
+  length: string;
+}
 
 const VALID_CONTENT_TYPES = ["movies", "series"];
 const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
@@ -11,178 +29,126 @@ const THUMBNAIL_FILE_NAME = "thumbnail.jpg";
 const entertainmentPath = path.join(process.cwd(), "entertainment.json");
 const productionPath = path.join(process.cwd(), "production.json");
 
-const { TYPE, PORT, THEATER_PATH, DISK_UUID } = process.env;
+const {
+  TYPE = "entertainment",
+  PORT = 8080,
+  THEATER_PATH = "",
+  DB,
+  DISK_UUID,
+} = process.env;
+
+const theaterInitCmd = [
+  "sudo",
+  "-S",
+  "mount",
+  "-t",
+  "ntfs",
+  `UUID=${DISK_UUID}`,
+  "/mnt/hdd",
+];
 
 const filePath = TYPE === "entertainment" ? entertainmentPath : productionPath;
 
-const app = express();
+const db = new Database(DB);
 
-const getMetaData = (videoFile: string) =>
-  new Promise((resolve, reject) => {
-    ffmpeg.ffprobe(videoFile, (err, { format }) => {
-      if (err) {
-        reject(err);
+const handleOpenVideoFile = (filePath: string, episodeId?: string) => {
+  const t0 = Date.now(); 
+  console.info(`Attempting to play file: ${filePath} with VLC`);
+  Bun.spawn(['vlc', filePath], {
+    onExit: () => {
+      const t1 = Date.now();
+      const deltaMinutes = Math.abs(t1 - t0) / 60000;
+      if(deltaMinutes > 0.1 && episodeId !== undefined) {
+        console.log(`UPDATE episodes SET lastPlayed = datetime('now') WHERE id = "${episodeId}";`)
+        db.query(`UPDATE episodes SET lastPlayed = datetime('now') WHERE id = "${episodeId}";`).run();
       }
-      const dur = format.duration || 0;
-      const hours = Math.floor(dur / 3600);
-      const minutes = (dur / 3600 - hours) * 60;
-      resolve({
-        length: `${hours > 0 ? hours + "h " : ""}${Math.floor(minutes)}m`,
-      });
-    });
-  });
-
-const getVideoFileOpener = (videoDir: string) => (err: Error | undefined , files: string[]) => {
-  if (!err) {
-    const fileName = files.find(
-      file => file.endsWith(".mkv") || file.endsWith(".mp4")
-    );
-    if (fileName !== undefined) {
-      console.log(`Attempting to play file: ${videoDir}/${fileName}`);
-      execFile("vlc", [`${videoDir}/${fileName}`]);
     }
-  }
-  console.error(err);
-  return undefined;
-};
+  });
+}
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "build")));
-
-app.get("/applications", (_, res) => {
-  res.sendFile(filePath);
-});
-
-app.post("/applications", (req, _) => {
-  fs.writeFile(filePath, JSON.stringify(req.body), () => {});
-});
-
-app.get("/run/pirate-init", (_, res) => {
-  if(THEATER_PATH) {
-  fs.readdir(THEATER_PATH, async err => {
-    if (err) {
+new Elysia()
+  .use(cors())
+  .use(staticPlugin({ prefix: "/" }))
+  .get("/applications", () => Bun.file(filePath))
+  .post("/applications", ({ body }) => {
+    Bun.write(filePath, JSON.stringify(body));
+  })
+  .get("/run/pirate-init", async ({ set }) => {
+    let isInit = await getIsTheaterInit();
+    if (!isInit) {
       if (DISK_UUID !== undefined) {
-        let cmdDone = false;
-        exec(
-          `cat ${process.cwd()}/.env.pwd | sudo -S mount -t ntfs UUID=${DISK_UUID} /mnt/hdd > /dev/null 2>&1`,
-          () => {
-            fs.readdir(THEATER_PATH, err => {
-              if (!err) {
-                res.status(200);
-              } else {
-                res.write("Accessing content storage failed.");
-                res.status(500);
-              }
-            });
-            cmdDone = true;
-          }
-        );
-        while (!cmdDone) {
-          await new Promise(r => setTimeout(r, 1));
+        const proc = Bun.spawn(theaterInitCmd, {
+          stdin: Bun.file(".env.pwd"),
+          stdout: null,
+        });
+        await proc.exited;
+
+        isInit = await getIsTheaterInit();
+
+        if (isInit) {
+          set.status = 200;
         }
-      } else {
-        res.write("Accessing content storage failed.");
-        res.status(500);
       }
     } else {
-      res.status(200);
+      set.status = 200;
+      return;
     }
-    res.end();
-  });
-  }
-});
+  })
+  .get("/run/:cmd", ({ params }) => {
+    const cmd = params.cmd;
+    console.log(`Running command: '${cmd}'`);
+    Bun.spawn([cmd]);
+  })
+  .get("/content/:contentType/:name/info", async ({ params }) => {
+    const { contentType, name: rawName } = params;
+    const name = toUtfSpaces(rawName);
+    const jsonObj = {};
+    if (contentType === "series") {
+      const episodes = (
+        db.query(
+          `SELECT * FROM episodes INNER JOIN series ON episodes.seriesId = series.id WHERE name = "${name}";`
+        ).all() || []
+      ) as TEpisode[];
+      jsonObj["seasons"] = groupBy((e: TEpisode) => 's' + e.season)(episodes);
+    } else if (contentType === "movies") {
+      const info = db.query(`SELECT length FROM movies WHERE name = "${name}"`).get() as QueryRes;
+      jsonObj["length"] = info?.length;
+    }
 
-app.get("/run/:cmd", (req, _) => {
-  const cmd = req.params.cmd;
-  console.log(`Running command: '${cmd}'`);
-  exec(cmd);
-});
-
-app.get("/content/:contentType/:name/info", async (req, res) => {
-  const content = req.params.contentType;
-  const contentPath = `${THEATER_PATH}/${content}/${req.params.name}`;
-  const jsonObj = {};
-  if (content === "series") {
-    const files = fs.readdirSync(contentPath);
-    const seasons = {};
-    await Promise.all(
-      files.map(
-        async f =>
-          new Promise(async (resolve, _) => {
-            if (fs.lstatSync(`${contentPath}/${f}`).isDirectory()) {
-              const seasonFiles = fs.readdirSync(`${contentPath}/${f}`);
-              const episodes = seasonFiles.filter(f => f !== "subtitles");
-
-              seasons[f] = await Promise.all(
-                episodes.map(async e => ({
-                  file: e,
-                  ...(await getMetaData(`${contentPath}/${f}/${e}`)),
-                }))
-              );
-              resolve();
-            }
-            resolve();
-          })
-      )
-    );
-    jsonObj["seasons"] = seasons;
-  } else {
-    const files = fs.readdirSync(contentPath);
-    const movieName = files.find(
-      file => file.endsWith(".mkv") || file.endsWith(".mp4")
-    );
-    jsonObj["length"] = (
-      await getMetaData(`${contentPath}/${movieName}`)
-    ).length;
-  }
-
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify(jsonObj));
-});
-
-app.get("/content/:contentType/:name", (req, res) => {
-  const content = req.params.contentType;
-  const contentPath = `${THEATER_PATH}/${content}/${req.params.name}`;
-  if (VALID_CONTENT_TYPES.includes(content)) {
-    fs.readdir(contentPath, (err, files) => {
-      if (!err) {
-        const image = files.find(f => f === THUMBNAIL_FILE_NAME);
-        if (image !== undefined) {
-          res.sendFile(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
-        }
+    return jsonObj;
+  })
+  .get("/content/:contentType/:name", ({ params, set }) => {
+    const { contentType, name } = params;
+    const contentPath = `${THEATER_PATH}/${contentType}/${toUtfSpaces(name)}`; 
+    if (VALID_CONTENT_TYPES.includes(contentType)) { 
+      const files = fs.readdirSync(contentPath);
+      const image = files.find((f) => f === THUMBNAIL_FILE_NAME);
+      if (image !== undefined) {
+        return Bun.file(`${contentPath}/${THUMBNAIL_FILE_NAME}`);
       }
-    });
-  }
-});
-
-app.get("/content/:contentType", (req, res) => {
-  const content = req.params.contentType;
-  if (VALID_CONTENT_TYPES.includes(content)) {
-    fs.readdir(`${THEATER_PATH}/${content}`, (err, files) => {
-      if (!err) {
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify(files));
-      }
-    });
-  }
-});
-
-app.get("/play/movies/:name", (req, res) => {
-  const moviePath = `${THEATER_PATH}/movies/${req.params.name}`;
-  fs.readdir(moviePath, getVideoFileOpener(moviePath));
-});
-
-app.get("/play/series/:name/:season/:episode", (req, res) => {
-  const { name, season, episode } = req.params;
-  const episodePath = `${THEATER_PATH}/series/${name}/${season}/${episode}`;
-  execFile("vlc", [episodePath]);
-});
-
-app.get(["/", "/*"], (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
-app.listen(PORT, "127.0.0.1", () => {
-  console.log(`Server listening on PORT ${PORT}`);
-});
+    }
+    set.status = 404;
+    return []
+  })
+  .get("/content/:contentType", ({ params, set }) => {
+    const content = params.contentType;
+    if (VALID_CONTENT_TYPES.includes(content)) {
+      return fs.readdirSync(`${THEATER_PATH}/${content}`);
+    }
+    set.status = 404;
+    return []
+  })
+  .get("/play/movies/:name", ({ params }) => {
+    const movie = db.query(`SELECT * FROM movies WHERE name = "${toUtfSpaces(params.name)}";`).get() as TMovie;
+    const path = `${THEATER_PATH}/movies/${movie?.name}/${movie?.file}`
+    handleOpenVideoFile(path);
+  })
+  .get("/play/series/:name/:season/:episode", ({ params }) => {
+    const ep = db.query(`SELECT * FROM episodes WHERE file = "${toUtfSpaces(params.episode)}";`).get() as TEpisode;
+    const path = `${THEATER_PATH}/series/${toUtfSpaces(params.name)}/s${ep?.season}/${ep?.file}`
+    handleOpenVideoFile(path, ep?.id);
+  })
+  .get("/", () => Bun.file("public/index.html"))
+  .get("/select", () => Bun.file("public/index.html"))
+  .get("/pirate-theater", () => Bun.file("public/index.html"))
+  .listen(PORT, () => console.log(`🚀 Listening at localhost:${PORT}`));

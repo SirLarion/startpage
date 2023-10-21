@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build"
+    "build": "vite build && (rm -r ../backend/public || true) && mv build ../backend/public"
   },
   "eslintConfig": {
     "extends": [

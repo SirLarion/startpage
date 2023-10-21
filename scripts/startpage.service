@@ -1,10 +1,13 @@
 [Unit]
-Description=Start Node server for browser startpage
+Description=startpage
+After=network.target
 
 [Service]
-Type=forking
-ExecStart=/home/sirlarion/repos/startpage/scripts/startup.sh
-ExecStop=/usr/bin/pkill node
+Type=simple
+User=sirlarion
+WorkingDirectory=/home/sirlarion/repos/startpage/backend
+ExecStart=/home/sirlarion/.bun/bin/bun run index.ts
+Restart=always
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

@@ -81,9 +81,6 @@ export const PirateTheater: FC = () => {
     <Wrapper>
       <StyledPirateTheater>
         <ContentSection>
-          <SectionLabel style={spring}>RECENT</SectionLabel>
-        </ContentSection>
-        <ContentSection>
           <SectionLabel style={spring}>MOVIES</SectionLabel>
           <ContentReel
             items={movieList.map((movie, i) => {

@@ -24,7 +24,7 @@ export const useLoadContent = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:12345/run/pirate-init").then(res => {
+    axios.get("http://localhost:12345/run/pirate-init").then((res) => {
       if (res.status === 200) {
         setInit({ status: "success" });
       } else {
@@ -38,20 +38,22 @@ export const useLoadContent = () => {
       init.status === "success" &&
       !(movies.loading || series.loading) &&
       movies.list.length === 0 &&
-      movies.list.length === 0
+      series.list.length === 0
     ) {
-      setMovies(obj => ({ ...obj, loading: true }));
-      setSeries(obj => ({ ...obj, loading: true }));
+      setMovies((obj) => ({ ...obj, loading: true }));
+      setSeries((obj) => ({ ...obj, loading: true }));
 
-      axios.get("http://localhost:12345/content/movies").then(res => {
-        setMovies(obj => ({
+      axios.get("http://localhost:12345/content/movies").then((res) => {
+        console.log(res);
+        setMovies((obj) => ({
           ...obj,
           loading: false,
           list: res.data,
         }));
       });
-      axios.get("http://localhost:12345/content/series").then(res => {
-        setSeries(obj => ({
+      axios.get("http://localhost:12345/content/series").then((res) => {
+        console.log(res);
+        setSeries((obj) => ({
           ...obj,
           loading: false,
           list: res.data,

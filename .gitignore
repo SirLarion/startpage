@@ -2,6 +2,8 @@ build/
 
 scripts/download.sh
 
+*.sqlite
+
 # Logs
 logs
 *.log

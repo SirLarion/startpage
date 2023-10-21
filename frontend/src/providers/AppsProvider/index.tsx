@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, FC } from 'react';
+import React, { createContext, useEffect, useState, FC, ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ export type TAppInfo =
 
 export const AppsContext = createContext<TAppInfo>(undefined);
 
-export const AppsProvider: FC<{ children: JSX.Element }> = ({ children }) => {
+export const AppsProvider: FC<{ children: ReactNode}> = ({ children }) => {
   const [appInfo, setAppInfo] = useState<TAppInfo>(undefined);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import { animated, useSpring } from "react-spring";
 
-export const Hoverable: FC<{ scaleFactor?: number }> = ({
+export const Hoverable: FC<{ scaleFactor?: number, children?: ReactNode }> = ({
   scaleFactor = 1.3,
   children,
   ...restProps
