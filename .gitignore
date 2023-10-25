@@ -1,5 +1,5 @@
 build/
-backend/public/
+backend/build/
 
 scripts/download.sh
 

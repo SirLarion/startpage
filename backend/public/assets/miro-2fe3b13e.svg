@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="114.95mm" height="114.95mm" version="1.1" viewBox="0 0 407.29 407.29" xmlns="http://www.w3.org/2000/svg">
-<g transform="matrix(1 0 0 1 -2.2895 9.9417)" fill="#ffd02f">
-<rect x="2.2896" y="-9.9418" width="407.29" height="407.29" ry="36.843" fill="#ffd02f"/>
-</g>
-<g transform="matrix(6.6978 0 0 6.6978 37.542 42.9)">
-<path d="m32.708 6.4h-5.124l4.549 7.05-9.617-7.05h-5.124l4.549 9.238-9.617-9.238h-5.124l4.474 11.926-4.474 23.274h5.124l9.617-24.955-4.549 24.955h5.124l9.617-27.142-4.549 27.142h5.124l9.692-29.815z" fill="#050038" stroke-width="24.33"/>
-</g>
-</svg>
