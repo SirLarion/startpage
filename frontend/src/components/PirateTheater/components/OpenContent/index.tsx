@@ -58,7 +58,7 @@ const PlayButton = styled.div`
   transition: background-color 400ms ease-in-out;
   cursor: pointer;
 
-  :hover {
+  &:hover {
     background-color: ${p => p.theme.accent.red};
   }
 

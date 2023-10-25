@@ -1,13 +1,23 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { TContent } from "..";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { keys } from 'ramda';
+
+import { TContent } from '..';
+
+const YEAR_IN_MILLIS = 31557600000;
 
 type TSeriesEpisode = {
   file: string;
   length: string;
+  isSeen: boolean;
+  lastPlayed: string;
 };
 
 export type TSeriesSeasons = Record<`s${number}`, TSeriesEpisode[]>;
+export type TSeasonsRaw = Record<
+  `s${number}`,
+  Array<Omit<TSeriesEpisode, 'isSeen'>>
+>;
 
 type TContentInfo = {
   seasons?: TSeriesSeasons;
@@ -28,9 +38,29 @@ export const useLoadContentInfo = (content: TContent | null) => {
         .get(
           `http://localhost:12345/content/${content.type}/${content.name}/info`
         )
-        .then(res => {
-          setInfo(res.data || {});
-          console.log(res);
+        .then(({ data }) => {
+          const seasonsObj = data.seasons as TSeriesSeasons | undefined;
+          if (seasonsObj) {
+            const seasons = keys(seasonsObj).reduce(
+              (acc: TSeriesSeasons, s: `s${number}`) => {
+                acc[s] = seasonsObj[s].map(ep => ({
+                  ...ep,
+                  isSeen:
+                    !!ep.lastPlayed &&
+                    Date.now() - new Date(ep.lastPlayed).getTime() <
+                      YEAR_IN_MILLIS,
+                }));
+
+                return acc;
+              },
+              {} as TSeriesSeasons
+            );
+            setInfo({ ...data, seasons });
+          } else {
+            setInfo({
+              ...data,
+            });
+          }
           setLoading(false);
         });
     }

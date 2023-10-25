@@ -1,10 +1,10 @@
-import React, { FC, ReactNode } from "react";
-import styled from "styled-components";
+import React, { FC, ReactNode } from 'react';
+import styled from 'styled-components';
 
-import { RotateButton } from "../../components/RotateButton";
-import { hideScrollbar } from "../../../../styles/common";
-import { Carousel } from "../../components/Carousel";
-import { useCarouselControls } from "../../components/Carousel/useCarouselControls";
+import { RotateButton } from '../../components/RotateButton';
+import { hideScrollbar } from '../../../../styles/common';
+import { Carousel } from '../../components/Carousel';
+import { useCarouselControls } from '../../components/Carousel/useCarouselControls';
 
 export const VISIBLE_CONTENT_MAX = 5;
 
@@ -40,7 +40,7 @@ const BasicReel = styled.div`
 `;
 
 export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
-  const { ref, prev, next, active } = useCarouselControls(items.length);
+  const { ref, prev, next } = useCarouselControls();
   const showCarousel = items.length > VISIBLE_CONTENT_MAX;
   return (
     <StyledContentReel>
@@ -51,7 +51,6 @@ export const ContentReel: FC<IContentReelProps> = ({ items, loading }) => {
             <RotateRight rotate={next} />
             <Carousel
               ref={ref}
-              activeIndex={active}
               paddingLeft={160}
               paddingRight={130}
               responsive={{

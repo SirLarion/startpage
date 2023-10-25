@@ -24,6 +24,7 @@ const tables = [
     id TEXT PRIMARY KEY, \
     seriesId TEXT NOT NULL, \
     season INTEGER NOT NULL, \
+    episodeIndex INTEGER NOT NULL, \
     file TEXT NOT NULL, \
     length TEXT NOT NULL, \
     lastPlayed TEXT \
@@ -57,13 +58,13 @@ const init = async () => {
     return await Promise.all(range(1, numSeasons +1).map(async s => {
       const dir = `${path}/s${s}`;
       const episodes = fs.readdirSync(dir).filter((f) => f !== "subtitles");
-      return await Promise.all(episodes.map(async e => {
+      return await Promise.all(episodes.map(async (e, i) => {
         console.log(e)
         const id = uuid();
         const meta = await getMetaData(`${dir}/${e}`);
         db.query(`\
-          INSERT INTO episodes (id, seriesId, season, file, length) \ 
-          VALUES ("${id}", "${seriesId}", "${s}", "${e}", "${meta.length}");
+          INSERT INTO episodes (id, seriesId, season, episodeIndex, file, length) \ 
+          VALUES ("${id}", "${seriesId}", "${s}", "${i}", "${e}", "${meta.length}");
         `).run();
       }))
     }));

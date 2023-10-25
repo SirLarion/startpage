@@ -1,16 +1,16 @@
-import React, { FC, useContext } from "react";
-import styled from "styled-components";
+import React, { FC, useContext } from 'react';
+import styled from 'styled-components';
 
-import { Text } from "../../../../../styles/typography";
-import { PlayContext } from "../../../../../providers/PlayProvider";
-import { TSeriesSeasons } from "../../../hooks/useLoadContentInfo";
+import { Text } from '../../../../../styles/typography';
+import { PlayContext } from '../../../../../providers/PlayProvider';
+import { TSeriesSeasons } from '../../../hooks/useLoadContentInfo';
 
-import { Carousel } from "../../Carousel";
-import { Hoverable } from "../../../../Hoverable";
-import { useCarouselControls } from "../../Carousel/useCarouselControls";
-import { Episode } from "../Episode";
+import { Carousel } from '../../Carousel';
+import { Hoverable } from '../../../../Hoverable';
+import { useCarouselControls } from '../../Carousel/useCarouselControls';
+import { Episode } from '../Episode';
 
-import arrow_button from "../../../../../assets/arrow_button.svg";
+import arrow_button from '../../../../../assets/arrow_button.svg';
 
 export interface ISeasonDisplayProps {
   name: string;
@@ -67,8 +67,7 @@ export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
 }) => {
   const seasonAmount = Object.keys(seasons).length;
   const { play } = useContext(PlayContext);
-  const { ref, prev, next, active, sliding } =
-    useCarouselControls(seasonAmount);
+  const { ref, prev, next, active, listRef } = useCarouselControls();
 
   const activeSeason: keyof TSeriesSeasons = `s${active + 1}`;
 
@@ -80,13 +79,12 @@ export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
             onClick={prev}
             height={16}
             width={12}
-            style={{ transform: "rotate3d(0, 0, 1, 180deg)" }}
+            style={{ transform: 'rotate3d(0, 0, 1, 180deg)' }}
             src={arrow_button}
             alt="left arrow"
           />
         </Arrow>
         <Carousel
-          activeIndex={active}
           ref={ref}
           responsive={{ 0: { items: 1 } }}
           infinite={seasonAmount > 1}
@@ -104,18 +102,17 @@ export const SeasonDisplay: FC<ISeasonDisplayProps> = ({
           />
         </Arrow>
       </Header>
-      <Body $availableHeight={availableHeight}>
-        {!sliding &&
-          (seasons[activeSeason] || []).map((ep, i) => {
-            return (
-              <Episode
-                key={ep.file}
-                index={i}
-                length={ep.length}
-                play={() => play(`series/${name}/${activeSeason}/${ep.file}`)}
-              />
-            );
-          })}
+      <Body ref={listRef} $availableHeight={availableHeight}>
+        {(seasons[activeSeason] || []).map((ep, i) => {
+          return (
+            <Episode
+              key={ep.file}
+              index={i}
+              play={() => play(`series/${name}/${activeSeason}/${ep.file}`)}
+              {...ep}
+            />
+          );
+        })}
       </Body>
     </StyledSeasonDisplay>
   );

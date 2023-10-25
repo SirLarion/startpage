@@ -1,17 +1,17 @@
-import React, { FC, useContext, useState } from "react";
-import styled from "styled-components";
-import { animated, config, useSpring } from "react-spring";
+import React, { FC, useContext, useState } from 'react';
+import styled from 'styled-components';
+import { animated, config, useSpring } from 'react-spring';
 
-import { Heading1 } from "../../styles/typography";
-import { PlayContext } from "../../providers/PlayProvider";
-import { ContentPiece } from "./components/ContentPiece";
-import { FadeToBlack } from "./components/FadeToBlack";
-import { useLoadContent } from "./hooks/useLoadContent";
+import { Heading1 } from '../../styles/typography';
+import { PlayContext } from '../../providers/PlayProvider';
+import { ContentPiece } from './components/ContentPiece';
+import { FadeToBlack } from './components/FadeToBlack';
+import { useLoadContent } from './hooks/useLoadContent';
 
-import { ContentReel, VISIBLE_CONTENT_MAX } from "./components/ContentReel";
-import { OpenContent } from "./components/OpenContent";
+import { ContentReel, VISIBLE_CONTENT_MAX } from './components/ContentReel';
+import { OpenContent } from './components/OpenContent';
 
-import { SearchInput } from "./components/SearchInput";
+import { SearchInput } from './components/SearchInput';
 
 const Wrapper = styled.div`
   position: relative;
@@ -42,18 +42,18 @@ const ContentSection = styled(animated.section)`
 
 const search = (arr: string[], str: string) =>
   arr
-    .filter((v) => v.toLowerCase().includes(str.toLowerCase()))
+    .filter(v => v.toLowerCase().includes(str.toLowerCase()))
     .sort((a, b) => a.indexOf(str) - b.indexOf(str));
 
 export type TContent = {
-  type: "movies" | "series";
+  type: 'movies' | 'series';
   name: string;
 };
 
 export const PirateTheater: FC = () => {
   const [openedContent, setOpenedContent] = useState<TContent | null>(null);
 
-  const [searchString, setSearch] = useState("");
+  const [searchString, setSearch] = useState('');
   const {
     movieList: moviesRaw,
     seriesList: seriesRaw,
@@ -84,7 +84,7 @@ export const PirateTheater: FC = () => {
           <SectionLabel style={spring}>MOVIES</SectionLabel>
           <ContentReel
             items={movieList.map((movie, i) => {
-              const content: TContent = { type: "movies", name: movie };
+              const content: TContent = { type: 'movies', name: movie };
               return (
                 <ContentPiece
                   key={`${movie}${i}${searchString}`}
@@ -102,7 +102,7 @@ export const PirateTheater: FC = () => {
           <SectionLabel style={spring}>SERIES</SectionLabel>
           <ContentReel
             items={seriesList.map((series, i) => {
-              const content: TContent = { type: "series", name: series };
+              const content: TContent = { type: 'series', name: series };
               return (
                 <ContentPiece
                   key={`${series}${i}${searchString}`}

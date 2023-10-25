@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react";
-import AliceCarousel from "react-alice-carousel";
+import React, { forwardRef } from 'react';
+import AliceCarousel from 'react-alice-carousel';
 
-import "react-alice-carousel/lib/alice-carousel.css";
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 export const ANIMATION_DURATION = 300;
 
@@ -12,7 +12,7 @@ export const Carousel = forwardRef<AliceCarousel, CarouselProps>(
     <AliceCarousel
       ref={ref}
       infinite={infinite}
-      animationDuration={300}
+      animationDuration={ANIMATION_DURATION}
       disableDotsControls
       disableButtonsControls
       preservePosition

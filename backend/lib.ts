@@ -1,4 +1,4 @@
-import ffmpeg from "fluent-ffmpeg";
+import ffmpeg from 'fluent-ffmpeg';
 import { any } from 'ramda';
 
 const { THEATER_PATH } = process.env;
@@ -13,9 +13,10 @@ export const getIsTheaterInit = async () => {
   return await Bun.file(`${THEATER_PATH}/probe`).exists();
 };
 
-export const getVideoFile = (files: string[]) => files.find(
-  (file: string) => any((ft: string) => file.endsWith(ft))(VALID_VIDEO_FILETYPES),
-);
+export const getVideoFile = (files: string[]) =>
+  files.find((file: string) =>
+    any((ft: string) => file.endsWith(ft))(VALID_VIDEO_FILETYPES)
+  );
 
 export const toUtfSpaces = (str: string) => str.replace(/%20/g, ' ');
 
@@ -28,8 +29,7 @@ export const getMetaData = (videoFile: string) =>
       const hours = Math.floor(duration / 3600);
       const minutes = (duration / 3600 - hours) * 60;
       resolve({
-        length: `${hours > 0 ? hours + "h " : ""}${Math.floor(minutes)}m`,
+        length: `${hours > 0 ? hours + 'h ' : ''}${Math.floor(minutes)}m`,
       });
     });
   });
-
