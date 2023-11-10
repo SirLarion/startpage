@@ -52,19 +52,17 @@ const filePath = TYPE === 'entertainment' ? entertainmentPath : productionPath;
 const db = new Database(DB);
 
 const handleOpenVideoFile = (filePath: string, episodeId?: string) => {
-  const t0 = Date.now();
   console.info(`Attempting to play file: ${filePath} with VLC`);
-  Bun.spawn(['vlc', filePath], {
-    onExit: () => {
-      const t1 = Date.now();
-      const deltaMinutes = Math.abs(t1 - t0) / 60000;
-      if (deltaMinutes > 5 && episodeId !== undefined) {
-        db.query(
-          `UPDATE episodes SET lastPlayed = datetime('now') WHERE id = "${episodeId}";`
-        ).run();
-      }
-    },
-  });
+  const proc = Bun.spawn(['vlc', filePath]);
+
+  // 5 min timeout
+  setTimeout(() => {
+    if (proc.exitCode !== undefined) {
+      db.query(
+        `UPDATE episodes SET lastPlayed = datetime('now') WHERE id = "${episodeId}";`
+      ).run();
+    }
+  }, 300000);
 };
 
 new Elysia()

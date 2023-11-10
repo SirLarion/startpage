@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
-import { useSpring, animated } from "react-spring";
-import styled from "styled-components";
-import { TContent } from "../..";
-import { VISIBLE_CONTENT_MAX } from "../ContentReel";
+import React, { FC, useState } from 'react';
+import { useSpring, animated } from 'react-spring';
+import styled from 'styled-components';
+import { TContent } from '../..';
+import { VISIBLE_CONTENT_MAX } from '../ContentReel';
 
 export interface IContentPieceProps {
   content: TContent;
@@ -33,11 +33,11 @@ export const ContentPiece: FC<IContentPieceProps> = ({
   const entranceSpring = useSpring({
     from: {
       opacity: 0,
-      transform: "translate3d(0, 2rem, 0)",
+      transform: 'translate3d(0, 2rem, 0)',
     },
     to: {
       opacity: 1,
-      transform: "translate3d(0, 0rem, 0)",
+      transform: 'translate3d(0, 0rem, 0)',
     },
     delay: index > VISIBLE_CONTENT_MAX ? 70 : (index + extraDelay) * 70,
   });
@@ -45,8 +45,8 @@ export const ContentPiece: FC<IContentPieceProps> = ({
   // Rotate as little as possible to force subpixel rendering on firefox
   const hoverSpring = useSpring({
     transform: hover
-      ? "scale3d(1.1, 1.1, 1) rotate3d(0, 0, 1, 0.05deg)"
-      : "scale3d(1, 1, 1) rotate3d(0, 0, 1, 0.05deg)",
+      ? 'scale3d(1.1, 1.1, 1) rotate3d(0, 0, 1, 0.05deg)'
+      : 'scale3d(1, 1, 1) rotate3d(0, 0, 1, 0.05deg)',
   });
 
   return (

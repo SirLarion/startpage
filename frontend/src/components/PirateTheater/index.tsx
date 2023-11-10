@@ -52,8 +52,8 @@ export type TContent = {
 
 export const PirateTheater: FC = () => {
   const [openedContent, setOpenedContent] = useState<TContent | null>(null);
-
   const [searchString, setSearch] = useState('');
+
   const {
     movieList: moviesRaw,
     seriesList: seriesRaw,

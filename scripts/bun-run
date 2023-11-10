@@ -1,9 +1,0 @@
-#!/bin/bash
-
-cd /home/sirlarion/repos/startpage/backend
-
-echo "Starting Bun server"
-
-sleep 1
-
-/home/sirlarion/.bun/bin/bun run start &

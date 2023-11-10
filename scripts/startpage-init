@@ -1,0 +1,10 @@
+#!/bin/bash
+
+HOME="/home/sirlarion"
+
+echo "Starting Bun server"
+
+cd $HOME/repos/startpage/backend
+$HOME/.bun/bin/bun run index.ts &
+
+firefox --kiosk --new-window http://localhost:12345

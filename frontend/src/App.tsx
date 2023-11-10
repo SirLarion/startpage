@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Routes, Route } from 'react-router-dom';
 
-import { LinkContainer } from "./components/LinkContainer";
-import { AppsProvider } from "./providers/AppsProvider";
-import { PlayProvider } from "./providers/PlayProvider";
-import { AppSelectContainer } from "./components/AppSelectContainer";
-import { PirateTheater } from "./components/PirateTheater";
-import { hideScrollbar } from "./styles/common";
+import { LinkContainer } from './components/LinkContainer';
+import { AppsProvider } from './providers/AppsProvider';
+import { PlayProvider } from './providers/PlayProvider';
+import { AppSelectContainer } from './components/AppSelectContainer';
+import { PirateTheater } from './components/PirateTheater';
+import { hideScrollbar } from './styles/common';
 
 const StyledApp = styled.div`
   min-height: 100vh;

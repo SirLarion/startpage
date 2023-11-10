@@ -1,3 +1,0 @@
-[Desktop Entry]
-Type=Application
-Exec=/usr/bin/firefox --kiosk --new-window http://localhost:12345

@@ -1,0 +1,12 @@
+[Unit]
+Description=Startpage Bun server
+After=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sirlarion/repos/startpage/backend
+ExecStart=/home/YOUR_USER/.bun/bin/bun run start
+Restart=always
+
+[Install]
+WantedBy=default.target
