@@ -18,6 +18,7 @@ import figma from './assets/figma.svg';
 import steam from './assets/steam.svg';
 import vscode from './assets/vscode.svg';
 import pirate from './assets/pirate.svg';
+import habitica from './assets/habitica.svg';
 
 import { TAppMap } from './types';
 
@@ -46,6 +47,7 @@ export const APPLICATION_NAMES = [
   'steam',
   'vscode',
   'pirate',
+  'habitica'
 ] as const;
 
 export const APPLICATION_LINKS: TAppMap = {
@@ -116,5 +118,9 @@ export const APPLICATION_LINKS: TAppMap = {
   pirate: {
     url: '/pirate-theater',
     icon: <StyledIcon src={pirate} alt="pirate" />,
+  },
+  habitica: {
+    url: 'https://habitica.com',
+    icon: <StyledIcon src={habitica} alt="habitica" />,
   },
 };

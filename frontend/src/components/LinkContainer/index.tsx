@@ -25,7 +25,7 @@ export const LinkContainer: FC = ({ ...restProps }) => {
           {...link}
           key={index}
           selected={index === selectedIndex}
-          setSelected={() => setSelectedIndex(index)}
+          setSelected={(selected: boolean) => setSelectedIndex(selected ? index : undefined)}
           delay={index * 100}
         />
       ))}
