@@ -16,8 +16,8 @@ import aplus from './assets/aplus.svg';
 import miro from './assets/miro.svg';
 import figma from './assets/figma.svg';
 import steam from './assets/steam.svg';
-import vscode from './assets/vscode.svg';
 import pirate from './assets/pirate.svg';
+import areena from './assets/areena.svg';
 
 import { TAppMap } from './types';
 
@@ -44,8 +44,8 @@ export const APPLICATION_NAMES = [
   'miro',
   'figma',
   'steam',
-  'vscode',
   'pirate',
+  'areena',
 ] as const;
 
 export const APPLICATION_LINKS: TAppMap = {
@@ -109,12 +109,12 @@ export const APPLICATION_LINKS: TAppMap = {
     url: 'http://localhost:12345/run/steam',
     icon: <StyledIcon src={steam} alt="steam" />,
   },
-  vscode: {
-    url: 'http://localhost:12345/run/code',
-    icon: <StyledIcon src={vscode} alt="vscode" />,
-  },
   pirate: {
     url: '/pirate-theater',
     icon: <StyledIcon src={pirate} alt="pirate" />,
+  },
+  areena: {
+    url: 'https://areena.yle.fi/',
+    icon: <StyledIcon src={areena} alt="areena" />,
   },
 };
