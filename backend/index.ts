@@ -4,7 +4,7 @@ import { staticPlugin } from '@elysiajs/static';
 import cors from '@elysiajs/cors';
 import path from 'node:path';
 import fs from 'node:fs';
-import { getIsTheaterInit, toUtfSpaces } from './lib';
+import { getIsTheaterInit } from './lib';
 import { groupBy } from 'ramda';
 
 type QueryRes = Record<string, unknown> | undefined;
@@ -100,7 +100,7 @@ new Elysia()
   })
   .get('/content/:contentType/:name/info', async ({ params }) => {
     const { contentType, name: rawName } = params;
-    const name = toUtfSpaces(rawName);
+    const name = decodeURIComponent(rawName);
     const jsonObj = {};
     if (contentType === 'series') {
       const episodes = (db
@@ -120,7 +120,10 @@ new Elysia()
   })
   .get('/content/:contentType/:name', ({ params, set }) => {
     const { contentType, name } = params;
-    const contentPath = `${THEATER_PATH}/${contentType}/${toUtfSpaces(name)}`;
+    const contentPath = `${THEATER_PATH}/${contentType}/${decodeURIComponent(
+      name
+    )}`;
+    console.log(contentPath);
     if (VALID_CONTENT_TYPES.includes(contentType)) {
       const files = fs.readdirSync(contentPath);
       const image = files.find(f => f === THUMBNAIL_FILE_NAME);
@@ -141,7 +144,11 @@ new Elysia()
   })
   .get('/play/movies/:name', ({ params }) => {
     const movie = db
-      .query(`SELECT * FROM movies WHERE name = "${toUtfSpaces(params.name)}";`)
+      .query(
+        `SELECT * FROM movies WHERE name = "${decodeURIComponent(
+          params.name
+        )}";`
+      )
       .get() as TMovie;
     const path = `${THEATER_PATH}/movies/${movie?.name}/${movie?.file}`;
     handleOpenVideoFile(path);
@@ -149,10 +156,12 @@ new Elysia()
   .get('/play/series/:name/:season/:episode', ({ params }) => {
     const ep = db
       .query(
-        `SELECT * FROM episodes WHERE file = "${toUtfSpaces(params.episode)}";`
+        `SELECT * FROM episodes WHERE file = "${decodeURIComponent(
+          params.episode
+        )}";`
       )
       .get() as TEpisode;
-    const path = `${THEATER_PATH}/series/${toUtfSpaces(
+    const path = `${THEATER_PATH}/series/${decodeURIComponent(
       params.name
     )}/s${ep?.season}/${ep?.file}`;
     handleOpenVideoFile(path, ep?.id);
