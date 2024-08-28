@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "start": "bun run --watch index.ts",
-    "db:init": "bun run bootstrapDb.ts"
+    "db:sync": "bun run sync.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^0.7.1",
