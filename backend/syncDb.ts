@@ -11,13 +11,13 @@ const db = new Database(DB, { create: true });
 const tables = [
   'CREATE TABLE IF NOT EXISTS movies (\
     id TEXT PRIMARY KEY, \
-    file TEXT NOT NULL, \
-    name TEXT NOT NULL, \
+    file TEXT NOT NULL UNIQUE, \
+    name TEXT NOT NULL UNIQUE, \
     length TEXT NOT NULL \
   );',
   'CREATE TABLE IF NOT EXISTS series (\
     id TEXT PRIMARY KEY, \
-    name TEXT NOT NULL, \
+    name TEXT NOT NULL UNIQUE, \
     seasons INTEGER NOT NULL \
   );',
   'CREATE TABLE IF NOT EXISTS episodes (\
@@ -25,7 +25,7 @@ const tables = [
     seriesId TEXT NOT NULL, \
     season INTEGER NOT NULL, \
     episodeIndex INTEGER NOT NULL, \
-    file TEXT NOT NULL, \
+    file TEXT NOT NULL UNIQUE, \
     length TEXT NOT NULL, \
     lastPlayed TEXT \
   );',
@@ -43,7 +43,7 @@ const init = async () => {
       const movieFile = getVideoFile(files);
       const meta = await getMetaData(`${dir}/${movieFile}`);
       db.query(
-        `INSERT INTO movies (id, file, name, length) VALUES ("${id}", "${movieFile}", "${movie}", "${meta.length}") ON CONFLICT IGNORE;`
+        `INSERT INTO movies (id, file, name, length) VALUES ("${id}", "${movieFile}", "${movie}", "${meta.length}") ON CONFLICT(name) DO NOTHING;`
       ).run();
     })
   );
@@ -57,7 +57,7 @@ const init = async () => {
         .readdirSync(dir)
         .filter(f => fs.lstatSync(`${dir}/${f}`).isDirectory()).length;
       db.query(
-        `INSERT INTO series (id, name, seasons) VALUES ("${id}", "${serie}", ${numSeasons}) ON CONFLICT IGNORE;`
+        `INSERT INTO series (id, name, seasons) VALUES ("${id}", "${serie}", ${numSeasons}) ON CONFLICT(name) DO NOTHING;`
       ).run();
       return { id, serie, path: dir, numSeasons };
     })
@@ -78,7 +78,7 @@ const init = async () => {
               db.query(
                 `\
           INSERT INTO episodes (id, seriesId, season, episodeIndex, file, length) \ 
-          VALUES ("${id}", "${seriesId}", "${s}", "${i}", "${e}", "${meta.length}") ON CONFLICT IGNORE;
+          VALUES ("${id}", "${seriesId}", "${s}", "${i}", "${e}", "${meta.length}") ON CONFLICT(file) DO NOTHING;
         `
               ).run();
             })
